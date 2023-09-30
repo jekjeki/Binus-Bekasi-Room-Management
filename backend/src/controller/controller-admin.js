@@ -15,7 +15,7 @@ pool.on("error", (err) => {
 // send email
 const sendEmail = async (req, res) => {
 
-  let img = await qrcode.toDataURL('tes kirim email')
+  let img = await qrcode.toDataURL('http://localhost:8080/admin/get-borrower-data/RT628')
 
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -33,20 +33,30 @@ const sendEmail = async (req, res) => {
       to: `${req.body.email}`,
       attachDataUrls: true,
       subject: "Your Room Booking has been created !",
-    //   text: `Hello student ! your borrowing data has been created. Please check
-    // below information data: \n
-    // Borrower name: ${req.body.borrowerName} \n
-    // Student Id: ${req.body.nim} \n
-    // Email: ${req.body.email} \n
-    // Booking date: ${req.body.date} \n
-    // \n
-    // There is your booking data, dont forget to neat the room after time 
-    // booking ended yaa !
-    // `,
     html: `<div>
-      <h1>Hey there !</h1>
+      <h1> 👋 Hey Students ! 👋</h1>
       <div>
-      <img src="${img}" />
+        <p style="font-size:30px;">There are your borrowing data ! please check it out first. </p>
+      </div>
+      <div class="wrap-box-data">
+        <div>
+          <p>Borrower Name: ${req.body.borrowerName}</p>
+        </div>
+        <div>
+          <p>Student Id: ${req.body.nim}</p>
+        </div>
+        <div>
+          <p>Email: ${req.body.email}</p>
+        </div>
+        <div>
+          <p>Booking date: ${req.body.date}</p>
+        </div>
+      </div>
+      <div>
+        <p style="font-weight:bold;">There is your booking data!, if you found any failures you can contact LSC first!<p>
+      </div>
+      <div>
+        <img src="${img}" />
       </div>
     </div>`
     }, (error, info) => {
@@ -74,6 +84,30 @@ const getDataAdmin = (req, res) => {
     );
   });
 };
+
+// admin get specific data borrower 
+const borrowerDataById = (req, res) => {
+  db.query(`
+    SELECT 
+      br.BorrowerName, 
+      rt.ReservationDate, 
+      rt.ReservationStatus,
+      ro.RoomName,
+      s.ShiftName
+    FROM Borrower br JOIN ReservationTransaction rt 
+    ON br.BorrowerId=rt.BorrowerId 
+    JOIN Room ro ON rt.RoomId = ro.RoomId
+    JOIN RoomAvailableTransaction rat ON rt.RATId=rat.RATId
+    JOIN Shift s ON s.ShiftId=rat.ShiftId
+    WHERE rt.ReservationTransactionId = '${req.params.rtId}'
+  `, (error, results)=>{
+    if(error) throw error
+    res.status(200).send({
+      msg: 'success',
+      data: results
+    })
+  })
+}
 
 // login admin
 const loginAdmin = (req, res) => {
@@ -134,4 +168,5 @@ module.exports = {
   loginAdmin,
   getDataOneAdmin,
   sendEmail,
+  borrowerDataById
 };

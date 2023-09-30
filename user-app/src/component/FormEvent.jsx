@@ -157,9 +157,9 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
   const sendEmailToBorrower = async () => {
     axios.post(`http://localhost:8080/admin/send-email`, {
       email: emailBorrower,
-      // borrowerName: nameBorrower,
-      // nim: nimBorrower,
-      // date: getDate,
+      borrowerName: nameBorrower,
+      nim: nimBorrower,
+      date: getDate,
     })
     .then((res)=>{
       console.log(res)
