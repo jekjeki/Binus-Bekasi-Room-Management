@@ -6,6 +6,8 @@ import Login from './pages/Login'
 import LSCDashboard from './pages/LSCDashboard'
 import CreateReservation from './pages/CreateReservation'
 import DetailPage from './pages/DetailPage'
+import ManagerDashboard from './pages/ManagerDashboard'
+import SPVUpdatePage from './component/SPVUpdatePage'
 
 function App() {
 
@@ -16,6 +18,8 @@ function App() {
         <Route path='home-lsc' element={<LSCDashboard />} />
         <Route path='create-reservation' element={<CreateReservation />} />
         <Route path='/reservation/:reservationTransactionId' element={<DetailPage />} />
+        <Route path='/manager-dashboard' element={<ManagerDashboard />}/>
+        <Route path='/spv-update-page/:reservationTransactionId' element={<SPVUpdatePage />}/>
       </Route>
     )
   )

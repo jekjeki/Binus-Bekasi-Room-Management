@@ -32,17 +32,6 @@ function Home() {
   };
 
   const getAllReservationTransaction = async () => {
-    // await fetch(`http://localhost:8080/data/get-all-reservation`, {
-    //   method: "GET",
-    //   headers: {
-    //     "Content-type": "application/json;charset=UTF-8",
-    //   },
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     // console.log(data.data);
-    //     setArrReservation((arr) => [...arr, data.data]);
-    //   });
     axios
       .get(`http://localhost:8080/data/get-all-reservation`)
       .then((res) => {
@@ -155,10 +144,14 @@ function Home() {
                     <td className="px-1 py-2">{ar.ShiftName}</td>
                     <td className="px-1 py-2">
                       <Link
-                        to={`/reservation/${ar.ReservationTransactionId}`}
+                        to={(getAdminRole == 'LSC') ? `/reservation/${ar.ReservationTransactionId}` : (getAdminRole == 'SPV') ?
+                        `/spv-update-page/${ar.ReservationTransactionId}` : ``
+                      }
                       >
                         <button className="px-2 bg-sky-700 rounded px-1 py-1 text-white">
-                          Detail
+                          {
+                            (getAdminRole=='LSC')?`Detail`:`Detail & Update`
+                          }
                         </button>
                       </Link>
                     </td>

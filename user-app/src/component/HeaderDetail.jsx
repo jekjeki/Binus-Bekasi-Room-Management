@@ -1,11 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function HeaderDetail({ reservationTransactionId }) {
+
+  const [role, setRole] = useState('')
+
+  const getUser = async () => {
+    await fetch(`http://localhost:8080/admin/get-one-admin`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json;charset=UTF-8",
+        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
+      },
+    })
+    .then((res)=>res.json())
+    .then((data)=>{
+      setRole(data.data.AdminRole)
+    })
+  }
+
+  useEffect(()=>{
+    getUser()
+  })
+
   return (
     <div className="w-full h-24 drop-shadow-lg bg-white relative">
       <div className="flex underline underline-offset-2 px-2 py-2 decoration-sky-500">
-        <Link to={'/home-lsc'} className="flex">
+        <Link to={(role=='LSC')?'/home-lsc':'/manager-dashboard'} className="flex">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"

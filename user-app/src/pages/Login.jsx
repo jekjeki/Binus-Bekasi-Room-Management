@@ -32,6 +32,9 @@ function Login() {
       if(role == 'LSC'){
         navigate('/home-lsc')
       }
+      else if(role == 'SPV'){
+        navigate('/manager-dashboard')
+      }
     })
   }
 

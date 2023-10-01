@@ -260,6 +260,20 @@ const updateSpecificData = (req, res) => {
   );
 };
 
+// update reservation status data | reserved / decline 
+const updateReservationStatusData = (req, res) => {
+  db.query(`
+    UPDATE ReservationTransaction 
+    SET ReservationStatus = '${req.body.newstatus}'
+    WHERE ReservationTransactionId = '${req.params.rtId}'
+  `, (error, results)=>{
+    if(error) throw error
+    res.status(200).send({
+      msg: 'update success'
+    })
+  })
+}
+
 // select RoomAvailableTransactionId base on RAT table
 const getRatIdForUpdate = (req, res) => {
   db.query(
@@ -295,4 +309,5 @@ module.exports = {
   getRoomAvailableTransaction,
   updateSpecificData,
   getRatIdForUpdate,
+  updateReservationStatusData
 };

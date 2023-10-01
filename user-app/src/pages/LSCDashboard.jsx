@@ -33,7 +33,7 @@ function LSCDashboard() {
   return (
     <div className='w-screen h-screen'>
         <div className='flex w-full'>
-            <SideMenu menuToParent={menuToParent} />
+            <SideMenu menuToParent={menuToParent} role={getRole} />
             <Header data={dataMenu} />
         </div>
     </div>

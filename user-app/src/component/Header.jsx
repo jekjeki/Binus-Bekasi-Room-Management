@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import FormBorrowerData from "./FormBorrowerData";
 import FormEvent from "./FormEvent";
 import Home from "./Home";
+import { useNavigate } from "react-router-dom";
 
 function Header({data}) {
 
@@ -12,6 +13,8 @@ function Header({data}) {
     const [nameBorrower, setNameBorrower] = useState('')
     const [nimBorrower, setNimBorrower] = useState('')
     const [emailBorrower, setEmailBorrower] = useState('')
+
+    const navigate = useNavigate()
 
     const nextButtonClick = (clicked) => {
         setNextClick(clicked)
@@ -48,6 +51,20 @@ function Header({data}) {
         
     }
 
+    // logout admin 
+    const logout = async () => {
+        await fetch(`http://localhost:8080/admin/logout`, {
+            method: 'POST', 
+            headers: {
+                "Content-type": "application/json;charset=UTF-8",
+            }
+        })
+        .then((res)=>res.json())
+        .then((data)=>{
+            console.log(data)
+        })
+    }
+
     useEffect(()=>{
         getUser()
     }, [])
@@ -59,7 +76,10 @@ function Header({data}) {
           <p>Room Booking Management</p>
         </div>
         <div className="flex justify-center items-center px-2">
-          <p>Logout</p>
+          <p onClick={()=>{
+            sessionStorage.clear()
+            navigate('/')
+          }}>Logout</p>
         </div>
       </div>
       {

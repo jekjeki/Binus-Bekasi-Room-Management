@@ -103,7 +103,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
         roomId: getRoomId,
         eventId: fixedEventId,
         reservationDate: getDate,
-        status: "reserved",
+        status: "waiting approval",
         ratId: getRatId[0].RATId,
       }),
     });

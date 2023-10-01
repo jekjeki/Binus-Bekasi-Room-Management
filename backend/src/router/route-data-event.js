@@ -21,6 +21,7 @@ router.delete('/delete-specific-data/:reservationTransactionId', data.data.delet
 
 // update modal 
 router.patch('/update-reservation-data/:reservationTransactionId', data.data.updateSpecificData)
+router.patch('/manager-update-reservation-status/:rtId', data.data.updateReservationStatusData)
 router.get('/get-rat-id/:floorId/:roomId/:shiftId', data.data.getRatIdForUpdate)
 
 module.exports = router

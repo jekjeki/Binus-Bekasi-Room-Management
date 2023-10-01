@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import logo from '../images/Logo2.png'
 
 
-function SideMenu({ menuToParent }) {
+function SideMenu({ menuToParent, role }) {
 
     const [menu, setMenu] = useState('Home')
     const [data, setData] = useState('')
@@ -25,22 +25,31 @@ function SideMenu({ menuToParent }) {
             Home
           </p>
         </div>
-        <div className="py-2">
-          <p
-            onClick={() => {
-              setMenu('Create Reservation');
-              menuToParent(menu)
-            //   navigate('/create-reservation')
-            }}
-            className={
-              menu == "Create Reservation"
-                ? "font-bold text-white"
-                : "text-white"
-            }
-          >
-            Create Reservation
-          </p>
-        </div>
+        {
+          (role == 'LSC') ? (
+            <div className="py-2">
+              <p
+                onClick={() => {
+                  setMenu('Create Reservation');
+                  menuToParent(menu)
+                //   navigate('/create-reservation')
+                }}
+                className={
+                  menu == "Create Reservation"
+                    ? "font-bold text-white"
+                    : "text-white"
+                }
+              >
+                Create Reservation
+              </p>
+            </div>
+          ) :  (
+            <div>
+
+            </div>
+          )
+        }
+        
       </div>
     </div>
   );

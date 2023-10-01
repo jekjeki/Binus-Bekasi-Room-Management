@@ -138,6 +138,7 @@ const loginAdmin = (req, res) => {
   );
 };
 
+
 // get data admin
 const getDataOneAdmin = (req, res) => {
   if (
@@ -168,5 +169,6 @@ module.exports = {
   loginAdmin,
   getDataOneAdmin,
   sendEmail,
-  borrowerDataById
+  borrowerDataById, 
+
 };
