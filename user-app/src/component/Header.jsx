@@ -89,7 +89,7 @@ function Header({data}) {
             </div>
         )
         :
-        (
+        (data == 'Create Reservation') ? (
             <div>
                 <div>
                     <h3 className="font-bold text-2xl px-2 py-2">{`Hello,  ${role}`}</h3>
@@ -115,6 +115,10 @@ function Header({data}) {
                     }
                     
                 </div>
+            </div>
+        ) : (
+            <div>
+                <h3>Room Available for</h3>
             </div>
         )
       }

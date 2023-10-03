@@ -49,7 +49,20 @@ function SideMenu({ menuToParent, role }) {
             </div>
           )
         }
-        
+        <div className="py-2">
+          <p
+            onClick={()=>{
+              setMenu('Room Available')
+              menuToParent(menu)
+            }}
+
+            className={
+              menu == 'Room Available' ? "font-bold text-white" : "text-white"
+            }
+          >
+            Room Available
+          </p>
+        </div>
       </div>
     </div>
   );
