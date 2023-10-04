@@ -3,6 +3,7 @@ import FormBorrowerData from "./FormBorrowerData";
 import FormEvent from "./FormEvent";
 import Home from "./Home";
 import { useNavigate } from "react-router-dom";
+import ListRoomAvailable from "./ListRoomAvailable";
 
 function Header({data}) {
 
@@ -49,20 +50,6 @@ function Header({data}) {
             setAdminId(data.data.id)
         })
         
-    }
-
-    // logout admin 
-    const logout = async () => {
-        await fetch(`http://localhost:8080/admin/logout`, {
-            method: 'POST', 
-            headers: {
-                "Content-type": "application/json;charset=UTF-8",
-            }
-        })
-        .then((res)=>res.json())
-        .then((data)=>{
-            console.log(data)
-        })
     }
 
     useEffect(()=>{
@@ -118,7 +105,12 @@ function Header({data}) {
             </div>
         ) : (
             <div>
-                <h3>Room Available for</h3>
+                <div>
+                    <h3 className="font-bold text-2xl px-2 py-2">{`Hello,  ${role}`}</h3>
+                </div>
+                <div className="flex w-full justify-center align-center items-center py-[50px]">
+                    <ListRoomAvailable />
+                </div>
             </div>
         )
       }

@@ -294,6 +294,22 @@ const getRatIdForUpdate = (req, res) => {
   );
 };
 
+
+// get all room available for borrow 
+const getAllRoomAvail = (req, res) => {
+  db.query(
+    `SELECT rat.RATId, fl.FloorName, r.RoomName, s.ShiftName FROM RoomAvailableTransaction rat 
+    JOIN Floor fl ON rat.FloorId=fl.FloorId JOIN 
+    Room r ON r.RoomId=rat.RoomId JOIN Shift s ON s.ShiftId=rat.ShiftId
+    ;`, (error, results)=>{
+      if(error) throw error
+      res.status(200).send({
+        status: 'success', 
+        data: results
+      })
+    })
+}
+
 module.exports = {
   getFloor,
   getAllRoom,
@@ -309,5 +325,6 @@ module.exports = {
   getRoomAvailableTransaction,
   updateSpecificData,
   getRatIdForUpdate,
-  updateReservationStatusData
+  updateReservationStatusData,
+  getAllRoomAvail
 };

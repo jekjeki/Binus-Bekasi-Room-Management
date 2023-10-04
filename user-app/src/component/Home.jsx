@@ -62,7 +62,33 @@ function Home() {
       });
   };
 
+  // calculate time interval
+  const calculateTime = () => {
+    let deadline = new Date('2023-10-07').getTime()
+
+    let x = setInterval(()=>{
+      
+      let now = new Date().getTime()
+
+      let dif = deadline - now
+
+      let days = Math.floor(dif / (1000 * 60 * 60 * 24));
+      let hours = Math.floor((dif % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      let minutes = Math.floor((dif % (1000 * 60 * 60)) / (1000 * 60));
+      let seconds = Math.floor((dif % (1000 * 60)) / 1000);
+      
+      console.log(days+":"+hours+":"+minutes+":"+seconds)
+
+    }, 1000)
+
+
+
+          
+
+  }
+
   useEffect(() => {
+    calculateTime()
     getCurrentLogin();
     getAllReservationTransaction();
     if (dateClick) {
@@ -125,7 +151,6 @@ function Home() {
             </thead>
             <tbody>
               {arrReservation.map((ar, idx) => {
-                console.log(arrReservation);
                 return (
                   <tr key={idx} className="text-center border border-1">
                     <td className="px-1 py-2">

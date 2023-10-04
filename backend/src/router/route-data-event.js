@@ -11,7 +11,7 @@ router.get('/get-one-reservation/:reservationTransactionId', data.data.getOneRes
 router.get('/get-detail-component-data/:reservationTransactionId', data.data.getDetailComponentReservation)
 router.get('/filter-data-by-date/:date', data.data.getDataBasedOnFilterDate)
 router.get('/get-room-available-transaction/:floorId/:roomId/:shiftId', data.data.getRoomAvailableTransaction)
-
+router.get('/get-all-room-available', data.data.getAllRoomAvail);
 
 router.post('/insert-data-reservation',ratIdValidation , data.data.insertDataReservation)
 router.post('/insert-data-borrower', data.data.insertDataBorrower)
