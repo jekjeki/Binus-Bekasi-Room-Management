@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import HeaderDetail from './HeaderDetail'
 import DetailComponent from './DetailComponent'
+import axios from 'axios'
 
 function SPVUpdatePage() {
 
     const { reservationTransactionId } = useParams()
     const [arrRes, setArrRes] = useState([])
- 
+    const [getRatId, setRatId] = useState('')
 
     // get one reservation data
     const getOneReservation = async () => {
@@ -37,6 +38,15 @@ function SPVUpdatePage() {
         })
     }
 
+    // accept
+    const accept = () => {
+      axios.patch(`http://localhost:8080/data/spv-update-status-room/${reservationTransactionId}`, {
+            newStatus: 'not available'
+          })
+          .then((response)=>{
+            console.log(response)
+          })
+    }
 
     useEffect(()=>{
         getOneReservation()
@@ -60,6 +70,7 @@ function SPVUpdatePage() {
                   </thead>
                   <tbody>
                     {arrRes.map((ar, idx) => {
+                      // setRatId(ar[idx].RATId)
                       return (
                         <tr key={idx} className="border">
                           <td className="px-2 py-2">
@@ -125,6 +136,7 @@ function SPVUpdatePage() {
                   <button className="bg-cyan-400 text-white font-bold px-2 py-2 rounded"
                     onClick={()=>{
                         AcceptDeclineData('reserved')
+                        accept()
                     }}>
                         Accept Reservation
                   </button>

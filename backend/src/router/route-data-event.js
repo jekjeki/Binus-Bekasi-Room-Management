@@ -24,4 +24,11 @@ router.patch('/update-reservation-data/:reservationTransactionId', data.data.upd
 router.patch('/manager-update-reservation-status/:rtId', data.data.updateReservationStatusData)
 router.get('/get-rat-id/:floorId/:roomId/:shiftId', data.data.getRatIdForUpdate)
 
+router.patch('/rat-update-status/:ratId', data.data.updateStatusRatData)
+
+
+// spv
+router.patch('/spv-update-status-room/:reservationTransactionId', data.data.SPVUpdateStatusRat)
+
+
 module.exports = router

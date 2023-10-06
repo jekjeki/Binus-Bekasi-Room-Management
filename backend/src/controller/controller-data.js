@@ -110,7 +110,8 @@ const insertDataReservation = (req, res) => {
 const getAllBookingReservation = (req, res) => {
   db.query(
     `
-    SELECT rt.ReservationTransactionId, r.RoomName, ev.EventName, rt.ReservationDate, rt.ReservationStatus
+    SELECT rt.ReservationTransactionId, r.RoomName, ev.EventName, rt.ReservationDate, rt.ReservationStatus,
+    rat.RATId
     FROM ReservationTransaction rt 
     JOIN Room r ON rt.RoomId = r.RoomId
     JOIN EventData ev ON rt.EventId = ev.EventId
@@ -150,6 +151,7 @@ const getOneReservationDetailPage = (req, res) => {
     `
         SELECT 
         rt.ReservationTransactionId,r.RoomName,rt.ReservationDate, 
+        rat.RATId,
         rt.ReservationStatus, s.ShiftName
         FROM ReservationTransaction rt JOIN 
         Borrower br ON rt.BorrowerId = br.BorrowerId 
@@ -310,6 +312,43 @@ const getAllRoomAvail = (req, res) => {
     })
 }
 
+// update status data Room Available Transaction
+const updateStatusRatData = (req, res) => {
+  db.query(
+    `UPDATE RoomAvailableTransaction 
+      SET RoomStatus = '${req.body.newStatus}'
+      WHERE RATId = '${req.params.ratId}'
+    `
+  , (err, results)=>{
+    if(err) throw err
+    res.status(200).send({
+      message: 'sucess'
+    })
+
+  })
+}
+
+
+// SPV update status rat 
+const SPVUpdateStatusRat = (req, res) => {
+  db.query(`
+  UPDATE ReservationTransaction rt 
+  JOIN RoomAvailableTransaction rat ON rt.RATId=rat.RATId
+  SET rat.RoomStatus = '${req.body.newStatus}'
+  WHERE rt.ReservationTransactionId = '${req.params.reservationTransactionId}'
+  
+  
+  `, (error, result)=>{
+    if(error) throw error
+    res.status(200).send({
+      msg: 'success'
+    })
+  })
+}
+
+
+
+
 module.exports = {
   getFloor,
   getAllRoom,
@@ -326,5 +365,7 @@ module.exports = {
   updateSpecificData,
   getRatIdForUpdate,
   updateReservationStatusData,
-  getAllRoomAvail
+  getAllRoomAvail,
+  updateStatusRatData,
+  SPVUpdateStatusRat
 };
