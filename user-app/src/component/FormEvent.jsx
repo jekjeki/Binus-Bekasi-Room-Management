@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import SuccessModal from "./SuccessModal";
 import axios from "axios";
 import { getQrCode } from "../../../backend/src/utils/generatorQrCode";
+import Notification from "./notification/Notification";
 
 function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
   const [floorArr, setFloorArr] = useState([]);
@@ -21,9 +22,6 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
   const [saveClick, setSaveClick] = useState(false);
 
   const [okClickModal, setOkClickModal] = useState(false);
-
-  const [getRatId, setRatId] = useState([]);
-
   const [qr, setQr] = useState("")
 
   const minDate = () => {
@@ -103,10 +101,13 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
         roomId: getRoomId,
         eventId: fixedEventId,
         reservationDate: getDate,
+        shiftId : getSelectShift,
         status: "waiting approval",
-        ratId: getRatId[0].RATId,
+        // ratId: getRatId[0].RATId,
       }),
     });
+
+    setSaveClick(true);
   };
 
   // get data floor
@@ -124,29 +125,30 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
   const getRoomBaseFloor = async () => {
 
     axios
-      .get(`http://localhost:8080/data/get-room-at-floor/${getSelectFloor}`)
+      .get(`http://localhost:8080/data/get-room-at-floor`)
       .then((res) => {
         setRoomArr(res.data.data);
       })
       .catch((err) => console.log(err));
   };
 
-  // get RoomAvailableTransaction
-  const getRoomAvailableTransaction = async () => {
-    axios
-      .get(
-        `http://localhost:8080/data/get-room-available-transaction/${getSelectFloor}/${getRoomId}/${getSelectShift}`
-      )
-      .then((res) => {
-        setRatId(res.data.data);
-      })
-      .catch((err) => console.log(err));
-  };
+  // update room isAvail -> 0
+  const updateRoomIsAvail = async () => {
+    axios.patch(`http://localhost:8080/data/update-room-isavail/${getRoomId}`, {
+      newIsAvail: 0
+    })
+    .then((res)=>{
+      console.log(res)
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  }
 
   // get all shift data
   const getAllShift = async () => {
     axios
-      .get(`http://localhost:8080/data/get-shift-room/${getRoomId}`)
+      .get(`http://localhost:8080/data/get-shift-room`)
       .then((res) => {
         setShiftArr(res.data.data);
       })
@@ -185,9 +187,8 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
   }, []);
 
   return (
-    <div className={"w-3/5 bg-white drop-shadow-2xl rounded "}>
-      {saveClick && <SuccessModal OkClicked={OkClicked} />}
-      <div className={saveClick ? "blur-2xl" : ""}>
+    <div className={"w-3/5  "}>
+      <div className={"w-full bg-white drop-shadow-2xl rounded"}>
         <div className="text-center font-bold py-2">
           <p>Event & Room Data</p>
         </div>
@@ -316,19 +317,21 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
           <button
             className=" px-1 py-1 rounded text-white font-bold w-[200px] bg-[#57B4FF]"
             onClick={() => {
-              getRoomAvailableTransaction();
+              // getRoomAvailableTransaction();
               console.log(getDate);
-              console.log(getRatId[0].RATId);
+              // console.log(getRatId[0].RATId);
 
-              if(getRatId.length != 0){
-                setSaveClick(true);
+              // if(getRatId.length != 0){
+                
                 insertEventData()
                 insertDataBorrower()
                 insertDataReservation()
                 generateQRCode()
                 sendEmailToBorrower()
+                updateRoomIsAvail()
+                console.log('data saved')
 
-              }
+              // }
 
             }}
           >
@@ -336,6 +339,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
           </button>
         </div>
       </div>
+      {saveClick && <Notification />}
     </div>
   );
 }

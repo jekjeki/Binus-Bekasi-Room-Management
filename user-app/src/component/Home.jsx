@@ -62,44 +62,8 @@ function Home() {
       });
   };
 
-  // calculate time interval
-  const calculateTime = (ratId, reservationDate) => {
-
-    if(ratId == " "){
-      console.log('no data')
-    }
-    else{
-      let deadline = new Date(reservationDate).getTime()
-      let x = setInterval(()=>{
-        
-        let now = new Date().getTime()
-  
-        let dif = deadline - now
-  
-        let days = Math.floor(dif / (1000 * 60 * 60 * 24));
-        let hours = Math.floor((dif % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        let minutes = Math.floor((dif % (1000 * 60 * 60)) / (1000 * 60));
-        let seconds = Math.floor((dif % (1000 * 60)) / 1000);
-        
-        console.log(days+":"+hours+":"+minutes+":"+seconds)
-  
-        // update status 
-        if(days < 0){
-          axios.patch(`http://localhost:8080/data/rat-update-status/${ratId}`, {
-            newStatus: 'available'
-          })
-          .then((response)=>{
-            console.log(response)
-          })
-        }
-  
-      }, 1000)
-
-    }
-  }
-
   useEffect(() => {
-    calculateTime()
+    // calculateTime()
     getCurrentLogin();
     getAllReservationTransaction();
     if (dateClick) {
@@ -162,7 +126,7 @@ function Home() {
             </thead>
             <tbody>
               {arrReservation.map((ar, idx) => {
-                calculateTime(ar.RATId, ar.ReservationDate)
+                // calculateTime(ar.RATId, ar.ReservationDate)
                 return (
                   <tr key={idx} className="text-center border border-1">
                     <td className="px-1 py-2">

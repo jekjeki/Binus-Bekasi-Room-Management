@@ -64,7 +64,6 @@ function SPVUpdatePage() {
                     <tr className="">
                       <th className="px-2 py-2">Reservation Date</th>
                       <th className="px-2 py-2">Room Name</th>
-                      <th className="px-2 py-2">Shift Borrowing</th>
                       <th className="px-2 py-2">Reservation Status</th>
                     </tr>
                   </thead>
@@ -81,7 +80,6 @@ function SPVUpdatePage() {
                             }
                           </td>
                           <td className="px-2 py-2">{ar[idx].RoomName}</td>
-                          <td className="px-2 py-2">{ar[idx].ShiftName}</td>
                           <td className="px-2 py-2 flex">
                             {ar[idx].ReservationStatus}
                             {
@@ -136,7 +134,7 @@ function SPVUpdatePage() {
                   <button className="bg-cyan-400 text-white font-bold px-2 py-2 rounded"
                     onClick={()=>{
                         AcceptDeclineData('reserved')
-                        accept()
+                        // accept()
                     }}>
                         Accept Reservation
                   </button>

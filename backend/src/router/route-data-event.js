@@ -3,17 +3,17 @@ const data = require('../controller')
 const { ratIdValidation } = require('../validations/validation')
 
 router.get('/get-all-floor', data.data.getFloor)
-router.get('/get-room-at-floor/:floorId', data.data.getAllRoom)
-router.get('/get-shift-room/:roomId', data.data.getAllShift)
+router.get('/get-room-at-floor', data.data.getAllRoom)
+router.get('/get-shift-room', data.data.getAllShift)
 
 router.get('/get-all-reservation', data.data.getAllBookingReservation)
 router.get('/get-one-reservation/:reservationTransactionId', data.data.getOneReservationDetailPage)
 router.get('/get-detail-component-data/:reservationTransactionId', data.data.getDetailComponentReservation)
 router.get('/filter-data-by-date/:date', data.data.getDataBasedOnFilterDate)
-router.get('/get-room-available-transaction/:floorId/:roomId/:shiftId', data.data.getRoomAvailableTransaction)
-router.get('/get-all-room-available', data.data.getAllRoomAvail);
+// router.get('/get-room-available-transaction', data.data.getRoomAvailableTransaction)
+router.get('/get-all-room-available', data.data.getRoomIsAvail);
 
-router.post('/insert-data-reservation',ratIdValidation , data.data.insertDataReservation)
+router.post('/insert-data-reservation' , data.data.insertDataReservation)
 router.post('/insert-data-borrower', data.data.insertDataBorrower)
 router.post('/insert-event-data', data.data.insertEventData)
 
@@ -25,6 +25,7 @@ router.patch('/manager-update-reservation-status/:rtId', data.data.updateReserva
 router.get('/get-rat-id/:floorId/:roomId/:shiftId', data.data.getRatIdForUpdate)
 
 router.patch('/rat-update-status/:ratId', data.data.updateStatusRatData)
+router.patch('/update-room-isavail/:roomId', data.data.updateRoomIsAvail)
 
 
 // spv

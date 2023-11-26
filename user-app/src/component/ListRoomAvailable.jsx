@@ -21,12 +21,16 @@ function ListRoomAvailable() {
     getAllRoomAvailable();
   }, []);
 
+  // filter room isAvail
+  let avails = roomAvailables.filter((ra)=>ra.isAvail==1)
+  
+
   return (
     <table className="text-left rounded-lg">
       <thead className="bg-sky-300">
         <tr className="">
           <th scope="col" className="px-6 py-3">
-            Room Available Transaction Id 
+            Room Id
           </th>
           <th scope="col" className="px-6 py-3">
             Floor
@@ -35,21 +39,18 @@ function ListRoomAvailable() {
             Room 
           </th>
           <th scope="col" className="px-6 py-3">
-            Shift 
-          </th>
-          <th scope="col" className="px-6 py-3">
             Status
           </th>
         </tr>
       </thead>
       <tbody>
         {
-            roomAvailables.map((ra, idx)=>{
+            avails.map((ra, idx)=>{
                 console.log(ra)
                 return( 
                     <tr key={idx} className="text-center border border-1">
                         <td className="px-1 py-2">
-                            {ra.RATId}
+                            {ra.RoomId}
                         </td>
                         <td className="px-1 py-2">
                             {ra.FloorName}
@@ -57,11 +58,8 @@ function ListRoomAvailable() {
                         <td className="px-1 py-2">
                             {ra.RoomName}
                         </td>
-                        <td className="px-1 py-2">
-                            {ra.ShiftName}
-                        </td>
                         <td>
-                            reserved
+                            {ra.isAvail && 'available'}
                         </td>
                     </tr>
                 )
