@@ -62,8 +62,42 @@ function Home() {
       });
   };
 
+  // UPDATE isAvail with interval
+  const updateisAvailWithInterval = () => {
+    arrReservation.map(async (ar)=>{
+      console.log(ar)
+      
+      var d = new Date(ar.ReservationDate).getDate()
+      var m = new Date(ar.ReservationDate).getMonth()
+       
+       var curr = new Date().getDate()
+       var currM = new Date().getMonth()
+
+       // melakukan update
+       if(currM > m || curr > d ){
+        console.log(curr)
+        console.log(currM)
+
+        await fetch(`http://localhost:8080/data/update-room-isavail/${ar.RoomAvailableId}`, {
+          method: 'PATCH',
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+          },
+          body: {
+            isAvail: 1
+          }
+        })
+        .then((res)=>res.json())
+        .then((data)=>console.log(data))
+        
+
+       }
+
+    })
+  }
+
   useEffect(() => {
-    // calculateTime()
+    updateisAvailWithInterval()
     getCurrentLogin();
     getAllReservationTransaction();
     if (dateClick) {
@@ -137,7 +171,7 @@ function Home() {
                     <td className="px-1 py-2">
                       {
                         new Date(ar.ReservationDate)
-                          .toISOString()
+                          .toLocaleDateString()
                           .split("T")[0]
                       }
                     </td>
@@ -163,7 +197,7 @@ function Home() {
           </table>
         </div>
       ) : (
-        <div>
+        <div className="flex w-full justify-center align-center items-center py-[50px]">
           {getLen != 0 && (
             <div>
               <table className="text-left rounded-lg">

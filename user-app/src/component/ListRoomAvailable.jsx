@@ -39,6 +39,9 @@ function ListRoomAvailable() {
             Room 
           </th>
           <th scope="col" className="px-6 py-3">
+            Shift
+          </th>
+          <th scope="col" className="px-6 py-3">
             Status
           </th>
         </tr>
@@ -58,8 +61,11 @@ function ListRoomAvailable() {
                         <td className="px-1 py-2">
                             {ra.RoomName}
                         </td>
+                        <td className="px-1 py-2">
+                            {ra.ShiftName}
+                        </td>
                         <td>
-                            {ra.isAvail && 'available'}
+                            {(ra.isAvail==1) && 'available'}
                         </td>
                     </tr>
                 )

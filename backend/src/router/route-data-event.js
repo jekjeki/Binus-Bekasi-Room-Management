@@ -25,7 +25,7 @@ router.patch('/manager-update-reservation-status/:rtId', data.data.updateReserva
 router.get('/get-rat-id/:floorId/:roomId/:shiftId', data.data.getRatIdForUpdate)
 
 router.patch('/rat-update-status/:ratId', data.data.updateStatusRatData)
-router.patch('/update-room-isavail/:roomId', data.data.updateRoomIsAvail)
+router.patch('/update-room-isavail/:roomAvailableId', data.data.updateRoomIsAvail)
 
 
 // spv

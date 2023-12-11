@@ -23,6 +23,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
 
   const [okClickModal, setOkClickModal] = useState(false);
   const [qr, setQr] = useState("")
+  const [roomAvailables, setRoomAvailables] = useState([])
 
   const minDate = () => {
     const today = new Date().toISOString().split("T")[0];
@@ -41,10 +42,10 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
   let fixedIdBorrower = "BR" + id1_str + id2_str + id3_str;
 
   // modal clicked ok
-  const OkClicked = (click) => {
-    setOkClickModal(click);
-    setSaveClick(false);
-  };
+  // const OkClicked = (click) => {
+  //   setOkClickModal(click);
+  //   setSaveClick(false);
+  // };
 
   // insert borrower data
   const insertDataBorrower = async () => {
@@ -90,22 +91,47 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
 
   // insert data reservation
   const insertDataReservation = async () => {
-    await fetch(`http://localhost:8080/data/insert-data-reservation`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json;charset=UTF-8",
-      },
-      body: JSON.stringify({
-        borrowerId: fixedIdBorrower,
-        adminId: adminId,
-        roomId: getRoomId,
-        eventId: fixedEventId,
-        reservationDate: getDate,
-        shiftId : getSelectShift,
-        status: "waiting approval",
-        // ratId: getRatId[0].RATId,
-      }),
-    });
+    
+
+    // data filter first 
+    const filters = roomAvailables.filter((data)=>
+      data.ShiftId == getSelectShift && data.RoomId == getRoomId
+      )
+
+      console.log(filters)
+
+      if(filters[0].isAvail == 1){
+
+        // masukkan data reservasi
+        await fetch(`http://localhost:8080/data/insert-data-reservation`, {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+          },
+          body: JSON.stringify({
+            borrowerId: fixedIdBorrower,
+            adminId: adminId,
+            roomId: getRoomId,
+            eventId: fixedEventId,
+            reservationDate: getDate,
+            shiftId : getSelectShift,
+            status: "waiting approval",
+            roomAvailableId: filters[0].RoomAvailableId
+          }),
+        });
+
+        // api for update isAvail in table RoomAvailable
+        await fetch(`http://localhost:8080/data/update-room-isavail/${filters[0].RoomAvailableId}`, {
+          method: 'PATCH',
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+          },
+          body: JSON.stringify({
+            isAvail: 0
+          })
+        })
+      }
+
 
     setSaveClick(true);
   };
@@ -132,18 +158,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
       .catch((err) => console.log(err));
   };
 
-  // update room isAvail -> 0
-  const updateRoomIsAvail = async () => {
-    axios.patch(`http://localhost:8080/data/update-room-isavail/${getRoomId}`, {
-      newIsAvail: 0
-    })
-    .then((res)=>{
-      console.log(res)
-    })
-    .catch((error)=>{
-      console.log(error)
-    })
-  }
+ 
 
   // get all shift data
   const getAllShift = async () => {
@@ -178,11 +193,22 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
     setQr(eventName)
   }, [eventName, setQr])
 
+  // get room available data 
+  const getRoomAvailableData = async () => {
+    axios.get('http://localhost:8080/data/get-all-room-available')
+    .then((res)=>{
+      setRoomAvailables(res.data.data)
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
   useEffect(() => {
     getAllFloor();
     getRoomBaseFloor();
     getAllShift();
-
+    getRoomAvailableData()
 
   }, []);
 
@@ -328,7 +354,6 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
                 insertDataReservation()
                 generateQRCode()
                 sendEmailToBorrower()
-                updateRoomIsAvail()
                 console.log('data saved')
 
               // }

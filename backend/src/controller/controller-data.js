@@ -93,7 +93,7 @@ const insertDataReservation = (req, res) => {
     `
         INSERT INTO ReservationTransaction VALUES
         ('${fixedId}', '${req.body.borrowerId}', '${req.body.adminId}','${req.body.roomId}','${req.body.eventId}',
-        '${req.body.reservationDate}', '${req.body.status}', '${req.body.shiftId}')
+        '${req.body.reservationDate}', '${req.body.status}', '${req.body.shiftId}', '${req.body.roomAvailableId}')
     `,
     (error, results) => {
       if (error) throw error;
@@ -110,7 +110,7 @@ const getAllBookingReservation = (req, res) => {
   db.query(
     `
     SELECT rt.ReservationTransactionId, r.RoomName, ev.EventName, rt.ReservationDate, 
-    s.ShiftName, rt.ReservationStatus FROM ReservationTransaction rt 
+    s.ShiftName, rt.ReservationStatus, rt.RoomAvailableId FROM ReservationTransaction rt 
     JOIN Room r ON rt.RoomId = r.RoomId 
     JOIN EventData ev ON rt.EventId = ev.EventId JOIN Shift s ON rt.ShiftId = s.ShiftId;
     `,
@@ -146,11 +146,12 @@ const getOneReservationDetailPage = (req, res) => {
     `
         SELECT 
         rt.ReservationTransactionId,r.RoomName,rt.ReservationDate,
-        rt.ReservationStatus
+        rt.ReservationStatus, sh.ShiftName
         FROM ReservationTransaction rt JOIN 
         Borrower br ON rt.BorrowerId = br.BorrowerId 
         JOIN Room r ON r.RoomId = rt.RoomId 
         JOIN EventData ev ON rt.EventId = ev.EventId 
+        JOIN Shift sh ON sh.ShiftId = rt.ShiftId
         WHERE rt.ReservationTransactionId = '${req.params.reservationTransactionId}'
         LIMIT 1
     `,
@@ -197,17 +198,16 @@ const getDataBasedOnFilterDate = (req, res) => {
     `
         SELECT 
         rt.ReservationTransactionId,
-        r.RoomName,
+        ro.RoomName,
         ev.EventName,
         rt.ReservationDate,
         rt.ReservationStatus,
         s.ShiftName
-        FROM ReservationTransaction rt JOIN 
-        Borrower br ON rt.BorrowerId = br.BorrowerId 
-        JOIN Room r ON r.RoomId = rt.RoomId 
-        JOIN EventData ev ON rt.EventId = ev.EventId 
-        JOIN RoomAvailableTransaction rat ON rat.RoomId = r.RoomId
-        JOIN Shift s ON rat.ShiftId = s.ShiftId
+        FROM ReservationTransaction rt 
+        JOIN Room ro ON rt.RoomId = ro.RoomId
+        JOIN EventData ev ON rt.EventId = ev.EventId
+        JOIN RoomAvailable ra ON rt.RoomAvailableId = ra.RoomAvailableId 
+        JOIN Shift s ON s.ShiftId = ra.ShiftId
         WHERE ReservationDate = '${req.params.date}'
     `,
     (error, results) => {
@@ -340,7 +340,8 @@ const SPVUpdateStatusRat = (req, res) => {
 // get room available v2
 const getRoomIsAvail = (req, res) => {
   db.query(`
-    SELECT * FROM Room r JOIN Floor fl ON r.FloorId = fl.FloorId
+    SELECT * FROM RoomAvailable ra JOIN Room r ON ra.RoomId=r.RoomId 
+    JOIN Shift s ON ra.ShiftId = s.ShiftId JOIN Floor f ON r.FloorId=f.FloorId
   `, (error, result)=>{
     if(error) throw new Error(error.message)
 
@@ -351,12 +352,13 @@ const getRoomIsAvail = (req, res) => {
   })
 }
 
-// update room isAvail 
+
+// update isAvail in table RoomAvailable
 const updateRoomIsAvail = (req, res) => {
   db.query(`
-    UPDATE Room 
-    SET isAvail = ${req.body.newIsAvail}
-    WHERE RoomId = '${req.params.roomId}'
+  UPDATE RoomAvailable 
+  SET isAvail = ${req.body.isAvail}
+  WHERE RoomAvailableId = '${req.params.roomAvailableId}'
   `, (error, result)=>{
     if(error) throw new Error(error.message)
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import HeaderDetail from './HeaderDetail'
 import DetailComponent from './DetailComponent'
 import axios from 'axios'
@@ -9,6 +9,7 @@ function SPVUpdatePage() {
     const { reservationTransactionId } = useParams()
     const [arrRes, setArrRes] = useState([])
     const [getRatId, setRatId] = useState('')
+    const navigate = useNavigate()
 
     // get one reservation data
     const getOneReservation = async () => {
@@ -36,16 +37,10 @@ function SPVUpdatePage() {
                 newstatus: value
             })
         })
-    }
 
-    // accept
-    const accept = () => {
-      axios.patch(`http://localhost:8080/data/spv-update-status-room/${reservationTransactionId}`, {
-            newStatus: 'not available'
-          })
-          .then((response)=>{
-            console.log(response)
-          })
+        setTimeout(()=>{
+          navigate('/manager-dashboard')
+        }, 3000)
     }
 
     useEffect(()=>{
