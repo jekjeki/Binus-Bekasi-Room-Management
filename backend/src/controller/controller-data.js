@@ -28,11 +28,22 @@ const getAllRoom = (req, res) => {
   );
 };
 
+// get all available room for borrowing 
+const getAllRoomIsAvail = (req, res) => {
+  db.query(`SELECT * FROM roomavailable ra JOIN room r ON ra.roomId=r.roomId WHERE isAvail = 1`, 
+  (error, results)=>{
+    if(error) throw error
+    res.status(200).send({
+      data: results
+    })
+  })
+}
+
 // get all shift based on available
 const getAllShift = (req, res) => {
   db.query(
     `
-    SELECT * FROM Shift
+    SELECT * FROM Shift s JOIN roomavailable ra ON s.shiftId=ra.shiftId WHERE isAvail = 1
     `,
     (error, results) => {
       if (error) throw error;
@@ -146,7 +157,7 @@ const getOneReservationDetailPage = (req, res) => {
     `
         SELECT 
         rt.ReservationTransactionId,r.RoomName,rt.ReservationDate,
-        rt.ReservationStatus, sh.ShiftName
+        rt.ReservationStatus, sh.ShiftName, r.RoomID
         FROM ReservationTransaction rt JOIN 
         Borrower br ON rt.BorrowerId = br.BorrowerId 
         JOIN Room r ON r.RoomId = rt.RoomId 
@@ -234,6 +245,18 @@ const deleteSpecificData = (req, res) => {
     }
   );
 };
+
+// update room available 
+const updateRoomAvailableData = (req, res) => {
+  db.query(`
+    UPDATE RoomAvailable SET isAvail = ${req.body.isAvail} WHERE RoomId = '${req.params.roomId}'
+  `,  (error, results)=>{
+    if(error) throw error
+    res.status(200).send({
+      msg: "update success"
+    })
+  })
+}
 
 // update data
 const updateSpecificData = (req, res) => {
@@ -390,5 +413,7 @@ module.exports = {
   updateStatusRatData,
   SPVUpdateStatusRat,
   getRoomIsAvail,
-  updateRoomIsAvail
+  updateRoomIsAvail,
+  updateRoomAvailableData,
+  getAllRoomIsAvail
 };

@@ -13,11 +13,14 @@ router.get('/filter-data-by-date/:date', data.data.getDataBasedOnFilterDate)
 // router.get('/get-room-available-transaction', data.data.getRoomAvailableTransaction)
 router.get('/get-all-room-available', data.data.getRoomIsAvail);
 
+router.get('/get-all-room-isAvail', data.data.getAllRoomIsAvail)
+
 router.post('/insert-data-reservation' , data.data.insertDataReservation)
 router.post('/insert-data-borrower', data.data.insertDataBorrower)
 router.post('/insert-event-data', data.data.insertEventData)
 
 router.delete('/delete-specific-data/:reservationTransactionId', data.data.deleteSpecificData)
+router.patch('/update-room-available/:roomId', data.data.updateRoomAvailableData)
 
 // update modal 
 router.patch('/update-reservation-data/:reservationTransactionId', data.data.updateSpecificData)

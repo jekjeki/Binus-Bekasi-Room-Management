@@ -14,6 +14,12 @@ function Header({data}) {
     const [nameBorrower, setNameBorrower] = useState('')
     const [nimBorrower, setNimBorrower] = useState('')
     const [emailBorrower, setEmailBorrower] = useState('')
+    
+    const [nextClickLast, setNextClickLast] = useState(false)
+
+    if(nextClickLast == true){
+        data = 'Home'
+    }
 
     const navigate = useNavigate()
 
@@ -23,6 +29,10 @@ function Header({data}) {
 
     const emailToParent = (email) => {
         setEmailBorrower(email)
+    }
+
+    const dataSetMenuFunc = (boolLast) => {
+        setNextClickLast(boolLast)
     }
 
     const nameToParent = (name) => {
@@ -97,7 +107,9 @@ function Header({data}) {
                             adminId={adminId}
                             emailBorrower={emailBorrower}
                             nameBorrower={nameBorrower}
-                            nimBorrower={nimBorrower} />
+                            nimBorrower={nimBorrower}
+                            dataSetMenuFunc={dataSetMenuFunc}
+                            />
                         )
                     }
                     

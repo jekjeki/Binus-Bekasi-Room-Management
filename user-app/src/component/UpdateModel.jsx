@@ -26,16 +26,16 @@ function UpdateModel({ btnUpdateModel, reservationTransactionId }) {
 
   // get all room 
   const getAllRoom = async () => {
-    axios.get(`http://localhost:8080/data/get-room-at-floor/${floorId}`)
+    axios.get(`http://localhost:8080/data/get-all-room-isAvail`)
     .then((res)=>{
-        console.log(res.data)
+        console.log(res.data.data[0])
         setArrRoom(res.data.data)
     })
   }
 
   // get all shift 
   const getAllShift = async () => {
-    axios.get(`http://localhost:8080/data/get-shift-room/${roomId}`)
+    axios.get(`http://localhost:8080/data/get-shift-room`)
     .then((res)=>{
       console.log(res.data)
       setArrShift(res.data.data)
@@ -53,6 +53,8 @@ function UpdateModel({ btnUpdateModel, reservationTransactionId }) {
 
   // patch the reservation data
   const patchResservationData = async () => {
+
+
     await fetch(`http://localhost:8080/data/update-reservation-data/${reservationTransactionId}`, {
       method: 'PATCH',
       headers: {

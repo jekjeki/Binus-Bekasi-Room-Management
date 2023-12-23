@@ -10,6 +10,7 @@ function DetailPage() {
   const { reservationTransactionId } = useParams();
 
   const [delClick, setDelClick] = useState(false);
+  const [getRoomId, setRoomId] = useState('')
 
   const [updateClick, setUpdateClick] = useState(false)
 
@@ -35,6 +36,7 @@ function DetailPage() {
       .then((res) => res.json())
       .then((data) => {
         console.log(data.data);
+        setRoomId(data.data[0].RoomID)
         setArrRes((arr) => [...arr, data.data]);
       });
   };
@@ -46,6 +48,16 @@ function DetailPage() {
     .catch((err)=>{
       console.log(err)
     })
+
+    // UPDATE isAvail 
+    axios.patch(`http://localhost:8080/data/update-room-available/${getRoomId}`, {
+      isAvail: 1
+    })
+    .then(()=>console.log('success update data'))
+    .catch((err)=>{
+      console.log(err)
+    })
+
 
     navigate('/home-lsc')
   }

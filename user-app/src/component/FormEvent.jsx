@@ -3,11 +3,13 @@ import SuccessModal from "./SuccessModal";
 import axios from "axios";
 import { getQrCode } from "../../../backend/src/utils/generatorQrCode";
 import Notification from "./notification/Notification";
+import { useNavigate } from "react-router-dom";
 
-function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
+function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetMenuFunc }) {
   const [floorArr, setFloorArr] = useState([]);
   const [getRoomArr, setRoomArr] = useState([]);
   const [getShiftArr, setShiftArr] = useState([]);
+  const navigate = useNavigate();
 
   const [getSelectFloor, setSelectFloor] = useState("FL001");
   const [getSelectShift, setSelectShift] = useState("SH001");
@@ -184,6 +186,8 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
     .catch((err)=>{
       console.log(err)
     })
+
+    
   }
 
   // generate QR CODE 
@@ -355,6 +359,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId }) {
                 generateQRCode()
                 sendEmailToBorrower()
                 console.log('data saved')
+                dataSetMenuFunc(true)
 
               // }
 
