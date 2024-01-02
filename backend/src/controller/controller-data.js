@@ -392,7 +392,22 @@ const updateRoomIsAvail = (req, res) => {
   })
 }
 
+// update room isAvail based on RT id after decline to 0
+const updateRoomIsAvailDecline = (req, res) => {
+  db.query(`
 
+  UPDATE ReservationTransaction rt 
+  JOIN RoomAvailable ra ON rt.RoomAvailableId = ra.RoomAvailableId 
+  SET ra.isAvail = ${req.body.isAvail}
+  WHERE rt.ReservationTransactionId = '${req.params.reservationTransactionId}'
+  `, (error, result)=>{
+    if(error) throw new Error(error.message)
+    res.status(200).send({
+      msg: 'success',
+      data: result
+    })
+  })
+}
 
 module.exports = {
   getFloor,
@@ -415,5 +430,6 @@ module.exports = {
   getRoomIsAvail,
   updateRoomIsAvail,
   updateRoomAvailableData,
-  getAllRoomIsAvail
+  getAllRoomIsAvail,
+  updateRoomIsAvailDecline
 };

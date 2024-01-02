@@ -10,7 +10,6 @@ function SPVUpdatePage() {
     const [arrRes, setArrRes] = useState([])
     const [getRatId, setRatId] = useState('')
     const navigate = useNavigate()
-
     // get one reservation data
     const getOneReservation = async () => {
         await fetch(`http://localhost:8080/data/get-one-reservation/${reservationTransactionId}`,{
@@ -37,6 +36,21 @@ function SPVUpdatePage() {
                 newstatus: value
             })
         })
+
+        // validate data 
+        if(value == 'decline'){
+          axios.patch(`http://localhost:8080/data/spv-update-isavail/${reservationTransactionId}`, {
+            isAvail: 1
+          })
+          .then((res)=>{
+            console.log(res.data)
+          })
+          .catch((error)=>{
+            console.error(error)
+          })
+        } else {
+         
+        }
 
         setTimeout(()=>{
           navigate('/manager-dashboard')
@@ -77,6 +91,7 @@ function SPVUpdatePage() {
                           <td className="px-2 py-2">{ar[idx].RoomName}</td>
                           <td className="px-2 py-2 flex">
                             {ar[idx].ReservationStatus}
+
                             {
                                 (ar[idx].ReservationStatus=='reserved') ? (
                                     <svg

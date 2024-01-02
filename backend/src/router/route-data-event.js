@@ -33,6 +33,6 @@ router.patch('/update-room-isavail/:roomAvailableId', data.data.updateRoomIsAvai
 
 // spv
 router.patch('/spv-update-status-room/:reservationTransactionId', data.data.SPVUpdateStatusRat)
-
+router.patch('/spv-update-isavail/:reservationTransactionId', data.data.updateRoomIsAvailDecline)
 
 module.exports = router
