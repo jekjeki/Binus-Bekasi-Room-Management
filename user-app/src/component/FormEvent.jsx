@@ -12,7 +12,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
   const navigate = useNavigate();
 
   const [getSelectFloor, setSelectFloor] = useState("FL001");
-  const [getSelectShift, setSelectShift] = useState("SH001");
+  const [getSelectShift, setSelectShift] = useState( "SH001" );
   const [getRoomId, setRoomId] = useState("RO001");
   const [getDate, setDate] = useState("");
 
@@ -104,7 +104,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
 
       if(filters[0].isAvail == 1){
 
-        // masukkan data reservasi
+      //   // masukkan data reservasi
         await fetch(`http://localhost:8080/data/insert-data-reservation`, {
           method: "POST",
           headers: {
@@ -122,7 +122,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
           }),
         });
 
-        // api for update isAvail in table RoomAvailable
+      // //   // api for update isAvail in table RoomAvailable
         await fetch(`http://localhost:8080/data/update-room-isavail/${filters[0].RoomAvailableId}`, {
           method: 'PATCH',
           headers: {
@@ -143,7 +143,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
     axios
       .get(`http://localhost:8080/data/get-all-floor`)
       .then((res) => {
-        console.log(res);
+      
         setFloorArr(res.data.data);
       })
       .catch((err) => console.log(err));
@@ -168,6 +168,9 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
       .get(`http://localhost:8080/data/get-shift-room`)
       .then((res) => {
         setShiftArr(res.data.data);
+        console.log(res.data.data)
+
+        getShiftArr.length == 0 ? setSelectShift(res.data.data[0]["ShiftId"]) : setSelectShift("SH001")
       })
       .catch((err) => console.log(err));
   };
@@ -312,7 +315,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
               placeholder="shift"
               className="bg-[#F0F0F0] w-full rounded border px-1 py-1"
               onChange={(e) => {
-                setSelectShift(e.target.value);
+                 setSelectShift(e.target.value) 
               }}
             >
               {getShiftArr.map((gs, idx) => {

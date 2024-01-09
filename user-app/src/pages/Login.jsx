@@ -27,6 +27,7 @@ function Login() {
       .then((res) => res.json())
       .then((data) => {
         if (data.result) {
+          console.log(data.result[0].AdminRole)
           setRole(data.result[0].AdminRole);
 
           setToken();
@@ -36,6 +37,9 @@ function Login() {
             navigate("/home-lsc");
           } else if (role == "SPV") {
             navigate("/manager-dashboard");
+          }
+          else if(role == "BM"){
+            navigate("/home-lsc")
           }
         } else {
           setErrMsg(data.msg);
