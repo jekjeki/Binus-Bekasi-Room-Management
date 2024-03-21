@@ -15,7 +15,7 @@ pool.on("error", (err) => {
 // send email
 const sendEmail = async (req, res) => {
 
-  let img = await qrcode.toDataURL('http://localhost:8080/admin/get-borrower-data/RT628')
+  let img = await qrcode.toDataURL('http://localhost:8081/admin/get-borrower-data/RT628')
 
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -111,6 +111,9 @@ const borrowerDataById = (req, res) => {
 
 // login admin
 const loginAdmin = (req, res) => {
+
+  res.setHeader('Access-Control-Allow-Origin', '*')
+
   db.query(
     `
     SELECT * FROM Admin WHERE AdminName = ${db.escape(req.body.name)} 

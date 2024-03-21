@@ -6,7 +6,7 @@ function HeaderDetail({ reservationTransactionId }) {
   const [role, setRole] = useState('')
 
   const getUser = async () => {
-    await fetch(`http://localhost:8080/admin/get-one-admin`, {
+    await fetch(`http://localhost:808/admin/get-one-admin`, {
       method: "POST",
       headers: {
         "Content-type": "application/json;charset=UTF-8",
@@ -24,13 +24,13 @@ function HeaderDetail({ reservationTransactionId }) {
   })
 
   return (
-    <div className="w-full h-24 drop-shadow-lg bg-white relative">
-      <div className="flex underline underline-offset-2 px-2 py-2 decoration-sky-500">
+    <div className="xl:w-[1152px] h-24  bg-gradient-to-r from-[#57CDFF] to-[#038ACA] relative">
+      <div className="flex underline underline-offset-2 px-8 py-2 decoration-sky-500">
         <Link to={(role=='LSC')?'/home-lsc':'/manager-dashboard'} className="flex">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
-            fill="rgb(148 163 184)"
+            fill="rgb(0 0 0)"
             className="w-5 h-5"
           >
             <path
@@ -39,7 +39,7 @@ function HeaderDetail({ reservationTransactionId }) {
               clipRule="evenodd"
             />
           </svg>
-          <p className="text-slate-400">back to dashboard</p>
+          <p className="text-slate-100">back to dashboard</p>
         </Link>
       </div>
       <div className="absolute bottom-0 left-0 px-2 font-bold text-2xl">

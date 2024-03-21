@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import logo from "../images/LogoBinus.png";
 import { useNavigate } from "react-router-dom";
+import "../style/background.css";
 
 function Login() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [getToken, setToken] = useState("");
+  // const [getToken, setToken] = useState("");
   const [role, setRole] = useState("");
   const [errMsg, setErrMsg] = useState("");
 
@@ -14,7 +15,7 @@ function Login() {
   const login = async (e) => {
     e.preventDefault();
 
-    await fetch("http://localhost:8080/admin/login", {
+    await fetch("http://localhost:8081/admin/login", {
       method: "POST",
       body: JSON.stringify({
         name: name,
@@ -30,8 +31,8 @@ function Login() {
           console.log(data.result[0].AdminRole)
           setRole(data.result[0].AdminRole);
 
-          setToken();
           sessionStorage.setItem("jwt", data.token);
+          
 
           if (role == "LSC") {
             navigate("/home-lsc");
@@ -48,8 +49,9 @@ function Login() {
   };
 
   return (
-    <div className="h-screen bg-gradient-to-r from-[#57CDFF] to-[#038ACA] flex justify-center items-center">
-      <div className="container w-[300px] bg-white rounded">
+    <div className="h-screen my-bg ">
+      <div className="my-bg-img w-[100%] h-[100%] flex justify-center items-center"> 
+      <div className="container w-[400px]  p-[40px]  bg-container ">
         <form onSubmit={login}>
           <div className="flex justify-center">
             <img src={logo} alt="image login" />
@@ -59,31 +61,32 @@ function Login() {
               type="text"
               placeholder="username"
               onChange={(e) => setName(e.target.value)}
-              className="bg-gray-50 border border-[#0098E2] rounded w-full px-2 py-1"
+              className="bg-gray-50 border border-[#0098E2] rounded-[10px] w-full px-4 py-2 text-black"
             />
           </div>
-          <div className="px-4 py-2">
+          <div className="px-4 py-2 ">
             <input
               type="password"
               placeholder="password"
               onChange={(e) => setPassword(e.target.value)}
-              className="bg-gray-50 border border-[#0098E2] rounded w-full px-2 py-1"
+              className="bg-gray-50 border border-[#0098E2] rounded-[10px] w-full px-4 py-2 text-black"
             />
           </div>
           <div className="px-4 py-2 flex justify-center">
-            <button className="flex justify-center bg-[#F08700] w-[100px] py-1 rounded text-[#ffff] font-bold">
+            <button onClick={(e)=>login(e)} className="flex justify-center bg-[#F08700] w-[140px]  py-2 rounded-[30px] text-[#ffff] font-medium">
               Login
             </button>
           </div>
           <div
             className={
               errMsg != "" &&
-              `mx-4 my-2 py-1 text-center bg-red-500 text-white rounded`
+              `mx-4 my-2 py-1 text-center bg-red-500 text-black rounded`
             }
           >
             {errMsg != "" && <p>{errMsg}</p>}
           </div>
         </form>
+      </div>
       </div>
     </div>
   );

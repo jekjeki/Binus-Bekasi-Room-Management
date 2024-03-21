@@ -12,7 +12,7 @@ function SPVUpdatePage() {
     const navigate = useNavigate()
     // get one reservation data
     const getOneReservation = async () => {
-        await fetch(`http://localhost:8080/data/get-one-reservation/${reservationTransactionId}`,{
+        await fetch(`http://localhost:8081/data/get-one-reservation/${reservationTransactionId}`,{
             method: 'GET', 
             headers: {
                 "Content-type": "application/json;charset=UTF-8",
@@ -27,7 +27,7 @@ function SPVUpdatePage() {
 
     // accept decline reservation data
     const AcceptDeclineData = async (value) => {
-        await fetch(`http://localhost:8080/data/manager-update-reservation-status/${reservationTransactionId}`,{
+        await fetch(`http://localhost:8081/data/manager-update-reservation-status/${reservationTransactionId}`,{
             method: 'PATCH',
             headers: {
                 "Content-type": "application/json;charset=UTF-8",
@@ -39,7 +39,7 @@ function SPVUpdatePage() {
 
         // validate data 
         if(value == 'decline'){
-          axios.patch(`http://localhost:8080/data/spv-update-isavail/${reservationTransactionId}`, {
+          axios.patch(`http://localhost:8081/data/spv-update-isavail/${reservationTransactionId}`, {
             isAvail: 1
           })
           .then((res)=>{

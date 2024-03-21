@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import logo from '../images/Logo2.png'
+import { useNavigate } from "react-router-dom";
+
 
 
 function SideMenu({ menuToParent, role }) {
@@ -7,20 +9,22 @@ function SideMenu({ menuToParent, role }) {
     const [menu, setMenu] = useState('Home')
     const [data, setData] = useState('')
 
+    const navigate = useNavigate()
+
   return (
-    <div className="w-1/5 h-[110vh] bg-gradient-to-r from-[#57CDFF] to-[#038ACA]">
-      <div className="flex justify-content">
+    <div className="w-1/5 h-screen justify-evenly bg-white ">
+      <div className="flex-col">
+      <div className="flex justify-content bg-[#57CDFF]">
         <img src={logo} alt="" />
       </div>
-      <div className="flex-col text-center">
-        <div className="py-2">
+        <div className="py-5">
           <p
             onClick={() => {
                 // navigate('/home-lsc')
                 setMenu('Home')
                 menuToParent(menu)
             }}
-            className={menu == "Home" ? "font-bold text-white" : "text-white"}
+            className={menu == "Home" ? "font-bold text-white bg-[#F08700] py-3 px-3" : "text-[#AAADB6] px-3"}
           >
             Home
           </p>
@@ -36,8 +40,8 @@ function SideMenu({ menuToParent, role }) {
                 }}
                 className={
                   menu == "Create Reservation"
-                    ? "font-bold text-white"
-                    : "text-white"
+                    ? "font-bold text-white bg-[#F08700] py-3 px-3"
+                    : "text-[#AAADB6] px-3"
                 }
               >
                 Create Reservation
@@ -49,15 +53,18 @@ function SideMenu({ menuToParent, role }) {
             </div>
           )
         }
-        <div className="py-2">
+        <div
+         onClick={()=>{
+          setMenu('Room Available')
+          menuToParent(menu)
+          navigate('/home-lsc')
+        }}
+        className="py-2">
           <p
-            onClick={()=>{
-              setMenu('Room Available')
-              menuToParent(menu)
-            }}
+           
 
             className={
-              menu == 'Room Available' ? "font-bold text-white" : "text-white"
+              menu == 'Room Available' ? "font-bold text-white bg-[#F08700] py-3 px-3" : "text-[#AAADB6] px-3"
             }
           >
             Room Available

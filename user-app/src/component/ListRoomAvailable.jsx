@@ -7,7 +7,7 @@ function ListRoomAvailable() {
   // get all room available for borrowing
   const getAllRoomAvailable = () => {
     axios
-      .get(`http://localhost:8080/data/get-all-room-available`)
+      .get(`http://localhost:8081/data/get-all-room-available`)
       .then((res) => {
         console.log(res.data.data);
         setRoomAvailables(res.data.data);

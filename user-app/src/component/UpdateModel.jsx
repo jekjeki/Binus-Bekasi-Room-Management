@@ -17,7 +17,7 @@ function UpdateModel({ btnUpdateModel, reservationTransactionId }) {
 
   // get all floor 
   const getFloor = async () => {
-    axios.get(`http://localhost:8080/data/get-all-floor`)
+    axios.get(`http://localhost:8081/data/get-all-floor`)
     .then((res)=>{
         setArrFloor(res.data.data)
         console.log(res.data)
@@ -26,7 +26,7 @@ function UpdateModel({ btnUpdateModel, reservationTransactionId }) {
 
   // get all room 
   const getAllRoom = async () => {
-    axios.get(`http://localhost:8080/data/get-all-room-isAvail`)
+    axios.get(`http://localhost:8081/data/get-all-room-isAvail`)
     .then((res)=>{
         console.log(res.data.data[0])
         setArrRoom(res.data.data)
@@ -35,7 +35,7 @@ function UpdateModel({ btnUpdateModel, reservationTransactionId }) {
 
   // get all shift 
   const getAllShift = async () => {
-    axios.get(`http://localhost:8080/data/get-shift-room`)
+    axios.get(`http://localhost:8081/data/get-shift-room`)
     .then((res)=>{
       console.log(res.data)
       setArrShift(res.data.data)
@@ -44,7 +44,7 @@ function UpdateModel({ btnUpdateModel, reservationTransactionId }) {
 
   // get rat id 
   const getRatId = async () => {
-    axios.get(`http://localhost:8080/data/get-rat-id/${floorId}/${roomId}/${shiftId}`)
+    axios.get(`http://localhost:8081/data/get-rat-id/${floorId}/${roomId}/${shiftId}`)
     .then((res)=>{
 
       setRatId(res.data.data[0].RATId)
@@ -55,7 +55,7 @@ function UpdateModel({ btnUpdateModel, reservationTransactionId }) {
   const patchResservationData = async () => {
 
 
-    await fetch(`http://localhost:8080/data/update-reservation-data/${reservationTransactionId}`, {
+    await fetch(`http://localhost:8081/data/update-reservation-data/${reservationTransactionId}`, {
       method: 'PATCH',
       headers: {
         "Content-type": "application/json;charset=UTF-8",

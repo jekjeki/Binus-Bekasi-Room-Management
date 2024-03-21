@@ -1,0 +1,24 @@
+.my-bg{
+    background-color: #26A6E0;
+    
+}
+.my-bg-img{
+    background-image:url("../images/background.jpg");
+    border-radius: 0 150px 0 150px;
+}
+
+.bg-container{
+    background: rgba(255, 255, 255, 0.381);
+    border-radius: 40px 0 40px 0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 2px solid rgba(255, 255, 255, 0.077);
+    box-shadow: 0 0 80px rgba(0, 0, 0, 0.612);
+    color: #fff;
+}
+
+.bg-home{
+    background-color: white;
+    border-radius: 40px;
+    padding: 30px;
+}

@@ -5,6 +5,7 @@ import Home from "./Home";
 import { useNavigate } from "react-router-dom";
 import ListRoomAvailable from "./ListRoomAvailable";
 
+
 function Header({data}) {
 
     const [role, setRole] = useState('')
@@ -46,7 +47,7 @@ function Header({data}) {
  
 
     const getUser = async () => {
-        await fetch('http://localhost:8080/admin/get-one-admin', {
+        await fetch('http://localhost:8081/admin/get-one-admin', {
             method: 'POST', 
             headers: {
                 'Content-type':'application/json;charset=UTF-8',
@@ -67,16 +68,16 @@ function Header({data}) {
     }, [])
 
   return (
-    <div className={"w-4/5"}>
-      <div className="w-full h-[70px] bg-white drop-shadow-md flex justify-between">
-        <div className="flex justify-center items-center px-2">
-          <p>Room Booking Management</p>
-        </div>
-        <div className="flex justify-center items-center px-2">
+    <div className={"w-full"}>
+      <div className="w-full h-[200px] bg-gradient-to-r from-[#57CDFF] to-[#038ACA]  ">
+        <div className="flex justify-end  px-10 py-4">
           <p onClick={()=>{
             sessionStorage.clear()
             navigate('/')
           }}>Logout</p>
+        </div>
+        <div className="justify-between items-center px-7 py-10 text-white font-bold">
+        <h3 className="font-bold text-2xl px-2 py-2">{`Room Booking Management`}</h3>
         </div>
       </div>
       {

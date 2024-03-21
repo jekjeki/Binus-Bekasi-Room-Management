@@ -51,7 +51,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
 
   // insert borrower data
   const insertDataBorrower = async () => {
-    await fetch(`http://localhost:8080/data/insert-data-borrower`, {
+    await fetch(`http://localhost:8081/data/insert-data-borrower`, {
       method: "POST",
       headers: {
         "Content-type": "application/json;charset=UTF-8",
@@ -78,7 +78,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
 
   // insert event data
   const insertEventData = async () => {
-    await fetch(`http://localhost:8080/data/insert-event-data`, {
+    await fetch(`http://localhost:8081/data/insert-event-data`, {
       method: "POST",
       headers: {
         "Content-type": "application/json;charset=UTF-8",
@@ -105,7 +105,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
       if(filters[0].isAvail == 1){
 
       //   // masukkan data reservasi
-        await fetch(`http://localhost:8080/data/insert-data-reservation`, {
+        await fetch(`http://localhost:8081/data/insert-data-reservation`, {
           method: "POST",
           headers: {
             "Content-type": "application/json;charset=UTF-8",
@@ -123,7 +123,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
         });
 
       // //   // api for update isAvail in table RoomAvailable
-        await fetch(`http://localhost:8080/data/update-room-isavail/${filters[0].RoomAvailableId}`, {
+        await fetch(`http://localhost:8081/data/update-room-isavail/${filters[0].RoomAvailableId}`, {
           method: 'PATCH',
           headers: {
             "Content-type": "application/json;charset=UTF-8",
@@ -141,7 +141,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
   // get data floor
   const getAllFloor = async () => {
     axios
-      .get(`http://localhost:8080/data/get-all-floor`)
+      .get(`http://localhost:8081/data/get-all-floor`)
       .then((res) => {
       
         setFloorArr(res.data.data);
@@ -153,7 +153,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
   const getRoomBaseFloor = async () => {
 
     axios
-      .get(`http://localhost:8080/data/get-room-at-floor`)
+      .get(`http://localhost:8081/data/get-room-at-floor`)
       .then((res) => {
         setRoomArr(res.data.data);
       })
@@ -165,7 +165,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
   // get all shift data
   const getAllShift = async () => {
     axios
-      .get(`http://localhost:8080/data/get-shift-room`)
+      .get(`http://localhost:8081/data/get-shift-room`)
       .then((res) => {
         setShiftArr(res.data.data);
         console.log(res.data.data)
@@ -177,7 +177,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
 
   // send the email base on borrower data 
   const sendEmailToBorrower = async () => {
-    axios.post(`http://localhost:8080/admin/send-email`, {
+    axios.post(`http://localhost:8081/admin/send-email`, {
       email: emailBorrower,
       borrowerName: nameBorrower,
       nim: nimBorrower,

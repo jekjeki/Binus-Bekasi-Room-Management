@@ -17,7 +17,7 @@ function Home() {
 
   // const get current user login
   const getCurrentLogin = async () => {
-    await fetch(`http://localhost:8080/admin/get-one-admin`, {
+    await fetch(`http://localhost:8081/admin/get-one-admin`, {
       method: "POST",
       headers: {
         "Content-type": "application/json;charset=UTF-8",
@@ -33,7 +33,7 @@ function Home() {
 
   const getAllReservationTransaction = async () => {
     axios
-      .get(`http://localhost:8080/data/get-all-reservation`)
+      .get(`http://localhost:8081/data/get-all-reservation`)
       .then((res) => {
         console.log(res);
         setArrReservation(res.data.data);
@@ -44,7 +44,7 @@ function Home() {
   // get data based on filter date
   const filterDate = async () => {
     await fetch(
-      `http://localhost:8080/data/filter-data-by-date/${dateFilter}`,
+      `http://localhost:8081/data/filter-data-by-date/${dateFilter}`,
       {
         method: "GET",
         headers: {
@@ -78,7 +78,7 @@ function Home() {
         console.log(curr)
         console.log(currM)
 
-        await fetch(`http://localhost:8080/data/update-room-isavail/${ar.RoomAvailableId}`, {
+        await fetch(`http://localhost:8081/data/update-room-isavail/${ar.RoomAvailableId}`, {
           method: 'PATCH',
           headers: {
             "Content-type": "application/json;charset=UTF-8",
@@ -106,15 +106,15 @@ function Home() {
   }, []);
 
   return (
-    <div className="w-full">
+    <div className="bg-home drop-shadow-md m-[40px]">
       <div className="px-2 py-2">
-        <h3 className="font-bold text-2xl px-2 py-2">{`Hello,  ${getAdminRole}`}</h3>
+        <h3 className="font-bold text-2xl text-[#381CA9] px-2 py-2">{`Hello,  ${getAdminRole}`}</h3>
       </div>
       <div className="flex px-2 py-2">
         <div className="px-2">
           <input
             type="date"
-            className="bg-[#F0F0F0] w-full rounded border px-1 py-1"
+            className="bg-[#F2F0F0] w-full  rounded-[20px] border px-5 py-2"
             value={dateFilter}
             onChange={(e) => {
               setDateFilter(e.target.value);
@@ -122,7 +122,7 @@ function Home() {
           />
         </div>
         <button
-          className="text-center bg-cyan-300 px-2 rounded text-white font-bold"
+          className="text-center bg-cyan-300 px-5 rounded-[20px] text-black font-bold"
           onClick={() => {
             // console.log(dateFilter)
             filterDate();
@@ -135,7 +135,7 @@ function Home() {
       {!dateClick ? (
         <div className="flex w-full justify-center align-center items-center py-[50px]">
           <table className="text-left rounded-lg">
-            <thead className="bg-sky-300">
+            <thead className="bg-sky-200">
               <tr>
                 <th scope="col" className="px-6 py-3">
                   Reservation Id
@@ -162,7 +162,7 @@ function Home() {
               {arrReservation.map((ar, idx) => {
                 // calculateTime(ar.RATId, ar.ReservationDate)
                 return (
-                  <tr key={idx} className="text-center border border-1">
+                  <tr key={idx} className="text-center border border-1 ">
                     <td className="px-1 py-2">
                       {ar.ReservationTransactionId}
                     </td>
@@ -183,7 +183,7 @@ function Home() {
                         `/spv-update-page/${ar.ReservationTransactionId}` : ``
                       }
                       >
-                        <button className="px-2 bg-sky-700 rounded px-1 py-1 text-white">
+                        <button className="px-2 bg-sky-800 rounded-[30px] px-2 py-2 text-white">
                           {
                             (getAdminRole=='LSC')?`Detail`:`Detail & Update`
                           }
