@@ -17,7 +17,7 @@ function Home() {
 
   // const get current user login
   const getCurrentLogin = async () => {
-    await fetch(`http://localhost:8081/admin/get-one-admin`, {
+    await fetch(`http://localhost:${process.env.PORT}/admin/get-one-admin`, {
       method: "POST",
       headers: {
         "Content-type": "application/json;charset=UTF-8",
@@ -33,7 +33,7 @@ function Home() {
 
   const getAllReservationTransaction = async () => {
     axios
-      .get(`http://localhost:8081/data/get-all-reservation`)
+      .get(`http://localhost:${process.env.PORT}/data/get-all-reservation`)
       .then((res) => {
         console.log(res);
         setArrReservation(res.data.data);
@@ -44,7 +44,7 @@ function Home() {
   // get data based on filter date
   const filterDate = async () => {
     await fetch(
-      `http://localhost:8081/data/filter-data-by-date/${dateFilter}`,
+      `http://localhost:${process.env.PORT}/data/filter-data-by-date/${dateFilter}`,
       {
         method: "GET",
         headers: {
@@ -78,7 +78,7 @@ function Home() {
         console.log(curr)
         console.log(currM)
 
-        await fetch(`http://localhost:8081/data/update-room-isavail/${ar.RoomAvailableId}`, {
+        await fetch(`http://localhost:${process.env.PORT}/data/update-room-isavail/${ar.RoomAvailableId}`, {
           method: 'PATCH',
           headers: {
             "Content-type": "application/json;charset=UTF-8",
@@ -106,9 +106,8 @@ function Home() {
   }, []);
 
   return (
-    <div className="bg-home drop-shadow-md m-[40px]">
+    <div className="bg-home drop-shadow-2xl m-[40px]">
       <div className="px-2 py-2">
-        <h3 className="font-bold text-2xl text-[#381CA9] px-2 py-2">{`Hello,  ${getAdminRole}`}</h3>
       </div>
       <div className="flex px-2 py-2">
         <div className="px-2">

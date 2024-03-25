@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import logo from '../images/Logo2.png'
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 
@@ -12,11 +13,13 @@ function SideMenu({ menuToParent, role }) {
     const navigate = useNavigate()
 
   return (
-    <div className="w-1/5 h-screen justify-evenly bg-white ">
+    <div className="w-[200px] h-[110vh] justify-evenly bg-white ">
       <div className="flex-col">
-      <div className="flex justify-content bg-[#57CDFF]">
+      <Link to={(role=='LSC')?'/home-lsc':'/manager-dashboard'} className="flex">
+      <div className="flex justify-content bg-[#57CDFF] h-full">
         <img src={logo} alt="" />
       </div>
+      </Link>
         <div className="py-5">
           <p
             onClick={() => {
@@ -30,6 +33,7 @@ function SideMenu({ menuToParent, role }) {
           </p>
         </div>
         {
+          
           (role == 'LSC') ? (
             <div className="py-2">
               <p

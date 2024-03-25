@@ -16,13 +16,34 @@ function DetailPage() {
   const [updateClick, setUpdateClick] = useState(false)
 
   const [btnUpdateModelClick, setBtnUpdateModelClick] = useState(false)
-
+  const [role, setRole] = useState('')
 
   const navigate = useNavigate()
+  const [dataMenu, setDataMenu] = useState('Home')
+
+  const getUser = async () => {
+    await fetch(`http://localhost:${process.env.PORT}/admin/get-one-admin`, {
+        method: 'POST', 
+        headers: {
+            'Content-type':'application/json;charset=UTF-8',
+            'Authorization':`Bearer ${sessionStorage.getItem('jwt')}`
+        }
+    })
+    .then((res)=>res.json())
+    .then((data)=>{
+        console.log(data.data.AdminRole)
+        setRole(data.data.AdminRole)
+    })
+    
+  }
 
   const btnUpdateModel = (value) => {
     setBtnUpdateModelClick(value)
   }
+
+  const menuToParent = (childdata) => {
+    setDataMenu(childdata)
+}
 
   // const menuToParent = (childdata) => {
   //   navigate("/" + childdata.toLowerCase());
@@ -32,7 +53,7 @@ function DetailPage() {
   // get all reservation data
   const getOneResevation = async () => {
     await fetch(
-      `http://localhost:8081/data/get-one-reservation/${reservationTransactionId}`,
+      `http://localhost:${process.env.PORT}/data/get-one-reservation/${reservationTransactionId}`,
       {
         method: "GET",
         headers: {
@@ -50,14 +71,14 @@ function DetailPage() {
 
   // delete data 
   const deleteReservationTransaction = async () => {
-    axios.delete(`http://localhost:8081/data/delete-specific-data/${reservationTransactionId}`)
+    axios.delete(`http://localhost:${process.env.PORT}/data/delete-specific-data/${reservationTransactionId}`)
     .then(()=>console.log('failed delete data!'))
     .catch((err)=>{
       console.log(err)
     })
 
     // UPDATE isAvail 
-    axios.patch(`http://localhost:8081/data/update-room-available/${getRoomId}`, {
+    axios.patch(`http://localhost:${process.env.PORT}/data/update-room-available/${getRoomId}`, {
       isAvail: 1
     })
     .then(()=>console.log('success update data'))
@@ -71,14 +92,15 @@ function DetailPage() {
 
   useEffect(() => {
     getOneResevation();
+    getUser()
   }, []);
 
   return (
-    <div className={"w-screen h-screen bg-[#F7F7F8]"}>
+    <div className={"w-full h-full bg-[#F7F7F8]"}>
         <div className='flex w-full'>
       <div className="flex h-full w-screen">
-        <SideMenu />  
-        <div className="w-3/4">
+        <SideMenu menuToParent={menuToParent}  role={role} />  
+        <div className="w-4/5">
         <HeaderDetail reservationTransactionId={reservationTransactionId} />
          <div className={" flex"}>
           {

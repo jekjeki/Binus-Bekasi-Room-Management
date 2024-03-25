@@ -12,7 +12,7 @@ function ManagerDashboard() {
     }
 
     const getUser = async () => {
-        await fetch('http://localhost:8081/admin/get-one-admin', {
+        await fetch(`http://localhost:${process.env.POST}/admin/get-one-admin`, {
             method: 'POST', 
             headers: {
                 'Content-type':'application/json;charset=UTF-8',
@@ -30,7 +30,7 @@ function ManagerDashboard() {
     })
 
   return (
-    <div className='w-screen h-screen bg-[#F7F7F8'>
+    <div className='w-screen h-screen bg-[#F7F7F8]'>
         <div className='flex'>
             <SideMenu menuToParent={menuToParent} role={getRole} />
             <Header data={dataMenu} />

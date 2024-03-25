@@ -7,7 +7,7 @@ function LSCDashboard() {
     const [dataMenu, setDataMenu] = useState('Home')
 
     const getUser = async () => {
-        await fetch('http://localhost:8081/admin/get-one-admin', {
+        await fetch(`http://localhost:${process.env.PORT}/admin/get-one-admin`, {
             method: 'POST', 
             headers: {
                 'Content-type':'application/json;charset=UTF-8',
@@ -31,7 +31,7 @@ function LSCDashboard() {
     }, [])
 
   return (
-    <div className='w-screen h-screen bg-[#F7F7F8]'>
+    <div className='w-screen h-full bg-[#F7F7F8]'>
         {/* flex */}
         <div className='flex w-full'>
             <SideMenu menuToParent={menuToParent} role={getRole} />

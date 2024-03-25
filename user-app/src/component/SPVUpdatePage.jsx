@@ -39,7 +39,7 @@ function SPVUpdatePage() {
 
         // validate data 
         if(value == 'decline'){
-          axios.patch(`http://localhost:8081/data/spv-update-isavail/${reservationTransactionId}`, {
+          axios.patch(`http://localhost:${process.env.PORT}/data/spv-update-isavail/${reservationTransactionId}`, {
             isAvail: 1
           })
           .then((res)=>{

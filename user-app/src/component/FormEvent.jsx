@@ -5,11 +5,12 @@ import { getQrCode } from "../../../backend/src/utils/generatorQrCode";
 import Notification from "./notification/Notification";
 import { useNavigate } from "react-router-dom";
 
-function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetMenuFunc }) {
+function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetMenuFunc, updateNextClick }) {
   const [floorArr, setFloorArr] = useState([]);
   const [getRoomArr, setRoomArr] = useState([]);
   const [getShiftArr, setShiftArr] = useState([]);
   const navigate = useNavigate();
+  const [nextClick, setNextCLick] = useState(true)
 
   const [getSelectFloor, setSelectFloor] = useState("FL001");
   const [getSelectShift, setSelectShift] = useState( "SH001" );
@@ -51,7 +52,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
 
   // insert borrower data
   const insertDataBorrower = async () => {
-    await fetch(`http://localhost:8081/data/insert-data-borrower`, {
+    await fetch(`http://localhost:${process.env.PORT}/data/insert-data-borrower`, {
       method: "POST",
       headers: {
         "Content-type": "application/json;charset=UTF-8",
@@ -78,7 +79,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
 
   // insert event data
   const insertEventData = async () => {
-    await fetch(`http://localhost:8081/data/insert-event-data`, {
+    await fetch(`http://localhost:${process.env.PORT}/data/insert-event-data`, {
       method: "POST",
       headers: {
         "Content-type": "application/json;charset=UTF-8",
@@ -105,7 +106,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
       if(filters[0].isAvail == 1){
 
       //   // masukkan data reservasi
-        await fetch(`http://localhost:8081/data/insert-data-reservation`, {
+        await fetch(`http://localhost:${process.env.PORT}/data/insert-data-reservation`, {
           method: "POST",
           headers: {
             "Content-type": "application/json;charset=UTF-8",
@@ -123,7 +124,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
         });
 
       // //   // api for update isAvail in table RoomAvailable
-        await fetch(`http://localhost:8081/data/update-room-isavail/${filters[0].RoomAvailableId}`, {
+        await fetch(`http://localhost:${process.env.PORT}/data/update-room-isavail/${filters[0].RoomAvailableId}`, {
           method: 'PATCH',
           headers: {
             "Content-type": "application/json;charset=UTF-8",
@@ -141,7 +142,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
   // get data floor
   const getAllFloor = async () => {
     axios
-      .get(`http://localhost:8081/data/get-all-floor`)
+      .get(`http://localhost:${process.env.PORT}/data/get-all-floor`)
       .then((res) => {
       
         setFloorArr(res.data.data);
@@ -153,7 +154,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
   const getRoomBaseFloor = async () => {
 
     axios
-      .get(`http://localhost:8081/data/get-room-at-floor`)
+      .get(`http://localhost:${process.env.PORT}/data/get-room-at-floor`)
       .then((res) => {
         setRoomArr(res.data.data);
       })
@@ -165,7 +166,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
   // get all shift data
   const getAllShift = async () => {
     axios
-      .get(`http://localhost:8081/data/get-shift-room`)
+      .get(`http://localhost:${process.env.PORT}/data/get-shift-room`)
       .then((res) => {
         setShiftArr(res.data.data);
         console.log(res.data.data)
@@ -202,7 +203,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
 
   // get room available data 
   const getRoomAvailableData = async () => {
-    axios.get('http://localhost:8080/data/get-all-room-available')
+    axios.get(`http://localhost:${process.env.PORT}/data/get-all-room-available`)
     .then((res)=>{
       setRoomAvailables(res.data.data)
     })
@@ -220,9 +221,9 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
   }, []);
 
   return (
-    <div className={"w-3/5  "}>
-      <div className={"w-full bg-white drop-shadow-2xl rounded"}>
-        <div className="text-center font-bold py-2">
+    <div className={"w-4/5"}>
+      <div className={"w-full bg-white drop-shadow-2xl rounded-[20px]"}>
+      <div className="text-center font-bold py-2">
           <p>Event & Room Data</p>
         </div>
         <div className="px-5 py-2">
@@ -232,7 +233,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
           <div>
             <input
               id="event"
-              className="bg-[#F0F0F0] w-full rounded border px-1 py-1"
+              className="w-full rounded-[10px] border border-2 px-3 py-1"
               placeholder="Event Name"
               value={eventName}
               onChange={(e) => {
@@ -247,7 +248,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
           </div>
           <div>
             <textarea
-              className="bg-[#F0F0F0] w-full rounded border px-1 py-1"
+              className="w-full rounded-[10px] border border-2 px-3 py-1"
               placeholder="Event Description"
               value={eventDesc}
               onChange={(e) => {
@@ -267,7 +268,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
               onChange={(e) => {
                 setFloorClick(true)
                 setSelectFloor(e.target.value)}}
-              className="bg-[#F0F0F0] w-full rounded border px-1 py-1"
+              className="w-full rounded-[10px] border border-2 px-3 py-1"
             >
               {floorArr.map((fl, idx) => {
                 return (
@@ -289,7 +290,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
               name=""
               id="room"
               placeholder="room"
-              className="bg-[#F0F0F0] w-full rounded border px-1 py-1"
+              className="w-full rounded-[10px] border border-2 px-3 py-1"
               onChange={(e) => {
                 setRoomId(e.target.value);
               }}
@@ -313,7 +314,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
               name=""
               id="shift"
               placeholder="shift"
-              className="bg-[#F0F0F0] w-full rounded border px-1 py-1"
+              className="w-full rounded-[10px] border border-2 px-3 py-1"
               onChange={(e) => {
                  setSelectShift(e.target.value) 
               }}
@@ -334,7 +335,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
           </div>
           <div>
             <input
-              className="bg-[#F0F0F0] w-full rounded border px-1 py-1"
+              className="w-full rounded-[10px] border border-2 px-3 py-1"
               type="date"
               name="date"
               id="date"
@@ -347,8 +348,8 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
           </div>
         </div>
         <div className="px-5 py-2 flex justify-center align-center">
-          <button
-            className=" px-1 py-1 rounded text-white font-bold w-[200px] bg-[#57B4FF]"
+          {/* <button
+            className=" px-1 py-2 rounded-[20px] text-white font-bold w-[200px] bg-[#57B4FF]"
             onClick={() => {
               // getRoomAvailableTransaction();
               console.log(getDate);
@@ -369,7 +370,12 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
             }}
           >
             Save
-          </button>
+          </button> */}<button 
+          onClick={()=>{
+            setNextCLick(true);
+            (nextClick) ? updateNextClick(2) : 0
+          }}className="bg-[#57B4FF] text-white font-bold w-28 rounded-[20px] px-1 py-2"
+          >Next</button>
         </div>
       </div>
       {saveClick && <Notification />}

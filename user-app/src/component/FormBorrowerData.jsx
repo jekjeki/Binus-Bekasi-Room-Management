@@ -8,11 +8,11 @@ function FormBorrowerData({nextButtonClick, nameToParent, nimToParent, emailToPa
     const [email, setEmail] = useState('')
 
   return (
-    <div className="w-3/5 bg-white drop-shadow-2xl rounded">
+    <div className="w-4/5 bg-white drop-shadow-2xl rounded-[20px]">
       <div className="text-center font-bold py-2">
         <p>Borrower Data</p>
       </div>
-      <div className="px-5 py-2">
+      <div className="px-5 py-4">
         <div>
           <label htmlFor="name">Name</label>
         </div>
@@ -20,14 +20,14 @@ function FormBorrowerData({nextButtonClick, nameToParent, nimToParent, emailToPa
           <input
             id="name"
             type="text"
-            className="bg-[#F0F0F0] w-full rounded border px-1 py-1"
+            className="w-full rounded-[10px] border border-2 px-3 py-1"
             placeholder="Name"
             value={name}
             onChange={(e)=>setName(e.target.value)}
           />
         </div>
       </div>
-      <div className="px-5 py-2">
+      <div className="px-5 py-4">
         <div>
           <label htmlFor="nim">NIM</label>
         </div>
@@ -35,14 +35,14 @@ function FormBorrowerData({nextButtonClick, nameToParent, nimToParent, emailToPa
           <input
             id="nim"
             type="text"
-            className="bg-[#F0F0F0] w-full rounded border px-1 py-1"
+            className="w-full rounded-[10px] border border-2 px-1 py-1"
             placeholder="NIM"
             value={nim}
             onChange={(e)=>setNim(e.target.value)}
           />
         </div>
       </div>
-      <div className="px-5 py-2">
+      <div className="px-5 py-4">
         <div>
           <label htmlFor="email">Email</label>
         </div>
@@ -50,22 +50,22 @@ function FormBorrowerData({nextButtonClick, nameToParent, nimToParent, emailToPa
           <input
             id="email"
             type="text"
-            className="bg-[#F0F0F0] w-full rounded border px-1 py-1"
+            className=" w-full rounded-[10px] border border-2 px-1 py-1"
             placeholder="Email"
             value={email}
             onChange={(e)=>setEmail(e.target.value)}
           />
         </div>
       </div>
-      <div className="px-5 py-2 flex justify-center align-center">
+      <div className="px-5 py-4 flex justify-center align-center">
         <button onClick={()=>{
-            setNextClick(true)
-            nextButtonClick(nextClick)
-            nameToParent(name)
-            nimToParent(nim)
+            setNextClick(true);
+            (nextClick) ? nextButtonClick(1) : 0
+            nameToParent(name);
+            nimToParent(nim);
             emailToParent(email)
 
-        }} className="bg-[#57B4FF] text-white font-bold w-28 rounded px-1 py-1">
+        }} className="bg-[#57B4FF] text-white font-bold w-28 rounded-[20px] px-1 py-2">
           Next
         </button>
       </div>

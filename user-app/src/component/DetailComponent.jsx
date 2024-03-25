@@ -7,7 +7,7 @@ function DetailComponent({reservationTransactionId}) {
 
   //API for get detail component data for reservation
   const getDetailDataForComponent = async () => {
-    await fetch(`http://localhost:8081/data/get-detail-component-data/${reservationTransactionId}`,{
+    await fetch(`http://localhost:${process.env.PORT}/data/get-detail-component-data/${reservationTransactionId}`,{
       method: 'GET', 
       headers: {
         'Content-type':'application/json;charset=UTF-8',
@@ -27,7 +27,7 @@ function DetailComponent({reservationTransactionId}) {
   
 
   return (
-    <div className='w-[300px] bg-white border rounded-[30px] drop-shadow-md m-[40px]'>
+    <div className='h-full w-[300px] bg-white border rounded-[30px] drop-shadow-md m-[40px]'>
       <div className='px-5 py-10 font-bold'>
         <p>Details</p>
       </div>
