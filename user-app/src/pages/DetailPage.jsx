@@ -175,7 +175,7 @@ function DetailPage() {
                 <div className="w-full flex justify-center items-center">
                   <div className="mx-3">
                     <button
-                      className="bg-red-600 text-white font-bold px-2 py-2 rounded"
+                      className="bg-red-600 text-white font-bold px-3 py-3 rounded-[30px]"
                       onClick={() => {
                         setDelClick(true)
                         deleteReservationTransaction()
@@ -185,7 +185,7 @@ function DetailPage() {
                     </button>
                   </div>
                   <div className="mx-3">
-                    <button className="bg-cyan-400 text-white font-bold px-2 py-2 rounded"
+                    <button className="bg-cyan-400 text-white font-bold px-3 py-3 rounded-[30px]"
                       onClick={()=>setUpdateClick(true)}>
                       UPDATE
                     </button>

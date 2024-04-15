@@ -1,8 +1,29 @@
+import axios from "axios";
 import React, { useState } from "react";
 
-const InventoryRequest = ({updateNextClick}) => {
+const InventoryRequest = ({updateNextClick, requestInventoryBorrow}) => {
     const [nextClick, setNextCLick] = useState(true)
     const [request, setRequest] = useState("");
+    const [error, setError] = useState("");
+
+    const InventoryRequest = () => {
+      axios.post(`http://localhost:8081/data/validation-form-inventory-request`, {
+        "inventoryId": request
+      })
+      .then((res)=>{
+        console.log(res.data.statuscode == 200)
+        //statuscode 200
+        setNextCLick(true);
+        if(res.data.statuscode == 200){
+          updateNextClick(4)
+          requestInventoryBorrow(request)
+        }
+      })
+      .catch((err)=>{
+        console.log(err.response.data.message)
+        setError(err.response.data.message)
+      })
+    }
 
     return (
         <div className={"w-4/5"}>
@@ -24,11 +45,18 @@ const InventoryRequest = ({updateNextClick}) => {
             <div className="px-5 py-7 flex justify-center align-center">
            <button 
               onClick={()=>{
-                setNextCLick(true);
-                (nextClick) ? updateNextClick(4) : 0
+                InventoryRequest()
               }}className="bg-[#57B4FF] text-white font-bold w-28 rounded-[20px] px-1 py-2"
               >Next</button>
             </div>
+            {
+             error.length != 0 ? 
+             <div className="text-xl text-red text-center">
+              <h1>{error}</h1>
+              </div>
+              :
+              <></>
+              }
             </div>
           </div>
     

@@ -75,8 +75,8 @@ function UpdateModel({ btnUpdateModel, reservationTransactionId }) {
   }, [])
 
   return (
-    <div className="w-full h-[30px]qwaa relative flex">
-      <div className="w-4/5 border rounded bg-white absolute top-10 right-[30px] left-[150px]">
+    <div className="w-full h-[30px]qwaa relative bg-white drop-shadow-2xl flex">
+      <div className="w-4/5 border rounded-[20PX] bg-white absolute top-10 right-[30px] left-[150px]">
         <div className="text-center font-bold py-2">
           <h3>Update Borrowing Data</h3>
         </div>
@@ -147,7 +147,7 @@ function UpdateModel({ btnUpdateModel, reservationTransactionId }) {
         </div>
         <div className="w-full font-bold flex items-center justify-center">
           <button
-            className="px-2 py-2 bg-cyan-400 w-1/4 my-4 mx-1 rounded text-white"
+            className="px-2 py-2 bg-cyan-400 w-1/4 my-4 mx-1 rounded-[20px] text-white"
             onClick={() => {
               setOkUpdateClick(true);
               btnUpdateModel(okUpdateClick);
@@ -161,7 +161,7 @@ function UpdateModel({ btnUpdateModel, reservationTransactionId }) {
             OK
           </button>
           <button
-            className="px-2 py-2 bg-red-600 w-1/4 my-4 mx-1 rounded text-white"
+            className="px-2 py-2 bg-red-600 w-1/4 my-4 mx-1 rounded-[20px] text-white"
           >
             CANCEL
           </button>

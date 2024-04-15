@@ -3,8 +3,9 @@ const data = require('../controller')
 const { ratIdValidation } = require('../validations/validation')
 
 router.get('/get-all-floor', data.data.getFloor)
-router.get('/get-room-at-floor', data.data.getAllRoom)
-router.get('/get-shift-room', data.data.getAllShift)
+router.get('/get-room-at-floor/:floorId', data.data.getRoomBaseSelect)
+router.get('/get-shift-room/:roomId', data.data.getAllShift)
+
 
 router.get('/get-all-reservation', data.data.getAllBookingReservation)
 router.get('/get-one-reservation/:reservationTransactionId', data.data.getOneReservationDetailPage)
@@ -34,5 +35,10 @@ router.patch('/update-room-isavail/:roomAvailableId', data.data.updateRoomIsAvai
 // spv
 router.patch('/spv-update-status-room/:reservationTransactionId', data.data.SPVUpdateStatusRat)
 router.patch('/spv-update-isavail/:reservationTransactionId', data.data.updateRoomIsAvailDecline)
+
+// validation
+router.post('/validate-form-borrower', data.data.validationBorrower)
+router.post('/validation-form-event-room-data', data.data.validationRoomEventData)
+router.post('/validation-form-inventory-request', data.data.validationInventoryRequest)
 
 module.exports = router

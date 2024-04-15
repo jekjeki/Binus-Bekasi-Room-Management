@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 
 
-function SideMenu({ menuToParent, role }) {
+function SideMenu({ menuToParent, role, nextButtonClick }) {
 
     const [menu, setMenu] = useState('Home')
     const [data, setData] = useState('')
@@ -13,7 +13,7 @@ function SideMenu({ menuToParent, role }) {
     const navigate = useNavigate()
 
   return (
-    <div className="w-[200px] h-[110vh] justify-evenly bg-white ">
+    <div className="w-[200px] h-[125vh] justify-evenly bg-white ">
       <div className="flex-col">
       <Link to={(role=='LSC')?'/home-lsc':'/manager-dashboard'} className="flex">
       <div className="flex justify-content bg-[#57CDFF] h-full">
@@ -26,6 +26,7 @@ function SideMenu({ menuToParent, role }) {
                 // navigate('/home-lsc')
                 setMenu('Home')
                 menuToParent(menu)
+                nextButtonClick(1)
             }}
             className={menu == "Home" ? "font-bold text-white bg-[#F08700] py-3 px-3" : "text-[#AAADB6] px-3"}
           >

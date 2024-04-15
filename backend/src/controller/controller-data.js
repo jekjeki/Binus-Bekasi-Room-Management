@@ -12,6 +12,19 @@ const getFloor = (req, res) => {
   });
 };
 
+// test -> get room at floor selected 
+const getRoomBaseSelect = (req, res) => {
+  console.log(req.params.floorId)
+  db.query(`
+  SELECT RoomId, RoomName FROM Room WHERE FloorId = '${req.params.floorId}'
+  `, (err, result)=>{
+    if(err) throw err
+    res.send({
+      results: result
+    })
+  })
+}
+
 // get all room based on floor
 const getAllRoom = (req, res) => {
   db.query(
@@ -43,7 +56,7 @@ const getAllRoomIsAvail = (req, res) => {
 const getAllShift = (req, res) => {
   db.query(
     `
-    SELECT * FROM Shift s JOIN roomavailable ra ON s.shiftId=ra.shiftId WHERE isAvail = 1
+    SELECT DISTINCT ra.ShiftId, s.ShiftName FROM Room r JOIN ReservationTransaction rt ON r.RoomId = rt.RoomId JOIN RoomAvailable ra ON ra.RoomId = rt.RoomId JOIN Shift s ON s.ShiftId=ra.ShiftId WHERE r.RoomId = '${req.params.roomId}' AND ra.isAvail = 1;
     `,
     (error, results) => {
       if (error) throw error;
@@ -409,6 +422,90 @@ const updateRoomIsAvailDecline = (req, res) => {
   })
 }
 
+// validasi next form borrower input 
+const validationBorrower = (req, res) => {
+  let name_borrower = req.body.name
+  let nim_borrower = req.body.nim 
+  let email_borrower = req.body.email 
+
+  let flag = 0
+
+  // validate data name empty 
+  if(name_borrower.length == 0) flag++
+  if(nim_borrower.length == 0) flag++
+  if(email_borrower.length == 0) flag++
+
+  if(flag!=0){
+    return res.status(400).send({
+      status: 'error', 
+      message: 'data cannot be empty !'
+    })
+  }
+
+  return res.status(200).send({
+    statuscode: 200, 
+    status: 'success', 
+  })
+}
+
+//validate event&room data
+const validationRoomEventData = (req, res) => {
+  let event_name = req.body.eventName
+  let event_desc = req.body.eventDescription
+  let floor_borrow = req.body.floorId
+  let room_borrow = req.body.roomId
+  let shift_name = req.body.shiftId
+  let reservation_date = req.body.reservationDate
+
+  let flag = 0
+
+  //validate empty
+  if(event_name.length == 0) flag++
+  if(event_desc.length == 0) flag++
+  if(floor_borrow.length == 0) flag++
+  if(room_borrow.length == 0) flag++
+  if(shift_name.length == 0) flag++
+  if(reservation_date.length == 0) flag++
+
+  if(flag!=0){
+    return res.status(400).send({
+      statuscode: 400, 
+      status: 'error', 
+      message: 'data cannot be empty !'
+    })
+  }
+
+  return res.status(200).send({
+    statuscode: 200, 
+    status: 'success', 
+  })
+
+}
+
+//validate inventory request
+const validationInventoryRequest = (req, res) => {
+  let inventory_request = req.body.inventoryId
+
+  let flag = 0
+
+  //validate empty
+  if(inventory_request.length == 0) flag++
+
+  if(flag!=0){
+    return res.status(400).send({
+      statuscode: 400,
+      status: 'error', 
+      message: 'data cannot be empty !'
+    })
+  }
+
+  return res.status(200).send({
+    statuscode: 200,
+    status: 'success', 
+  })
+
+}
+
 module.exports = {
   getFloor,
   getAllRoom,
@@ -431,5 +528,9 @@ module.exports = {
   updateRoomIsAvail,
   updateRoomAvailableData,
   getAllRoomIsAvail,
-  updateRoomIsAvailDecline
+  updateRoomIsAvailDecline, 
+  validationBorrower,
+  validationRoomEventData,
+  validationInventoryRequest, 
+  getRoomBaseSelect
 };

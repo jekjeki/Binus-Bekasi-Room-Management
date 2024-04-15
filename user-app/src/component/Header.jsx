@@ -6,9 +6,10 @@ import { useNavigate } from "react-router-dom";
 import ListRoomAvailable from "./ListRoomAvailable";
 import DetailRoom from "./DetailRoom";
 import InventoryRequest from "./InventoryRequest";
+import Summary from "./Summary";
 
 
-function Header({data}) {
+function Header({data, nextClickSideMenu}) {
 
     const [role, setRole] = useState('')
     const [adminId, setAdminId] = useState('')
@@ -17,6 +18,18 @@ function Header({data}) {
     const [nameBorrower, setNameBorrower] = useState('')
     const [nimBorrower, setNimBorrower] = useState('')
     const [emailBorrower, setEmailBorrower] = useState('')
+
+    const [eventName, setEventName] = useState('')
+    const [eventDesc, setEventDesc] = useState('')
+    const [getSelectFloor, setGetSelectFloor] = useState('')
+    const [getRoomId, setGetRoomId] = useState('')
+    const [getSelectShift, setGetSelectShift] = useState('')  
+    const [getDate, setGetDate] = useState('') 
+
+    const [request, setRequest] = useState('')
+    
+    
+   
     
     const [nextClickLast, setNextClickLast] = useState(false)
 
@@ -54,28 +67,58 @@ function Header({data}) {
         setNextClick(click)
     }
 
+    const updateNextClickSummary = (click) => {
+        setNextClick(click)
+    }
+    const eventNameTofront = (eventName) => {
+        setEventName(eventName)
+    }
+    const eventDescToFront = (eventDesc) => {
+        setEventDesc(eventDesc)
+    }
+    const floorIdToFront = (getSelectFloor) => {
+        setGetSelectFloor(getSelectFloor)
+    }
+    const roomIdToFront = (getRoomId) => {
+        setGetRoomId(getRoomId)
+    }
+    const shiftIdToFront = (getSelectShift) => {
+        setGetSelectShift(getSelectShift)
+    }
+    const reservationDateToFront = (getDate) => {
+        setGetDate(getDate)
+    }
+    const requestInventoryBorrow = (request) => {
+        setRequest(request)
+    }
+  // eventNameTofront(eventName)
+    // eventDescToFront(eventDesc)
+    // floorIdToFront(getSelectFloor)
+    // roomIdToFront(getRoomId)
+    // shiftIdToFront(getSelectShift)
+    // reservationDateToFront(getDate)
+
  
 
-    const getUser = async () => {
+    const getCurrentLogin = async () => {
         await fetch(`http://localhost:${process.env.PORT}/admin/get-one-admin`, {
-            method: 'POST', 
-            headers: {
-                'Content-type':'application/json;charset=UTF-8',
-                'Authorization':`Bearer ${sessionStorage.getItem('jwt')}`
-            }
+          method: "POST",
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+            Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
+          },
         })
-        .then((res)=>res.json())
-        .then((data)=>{
-            console.log(data.data)
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data)
             setRole(data.data.AdminRole)
-            setAdminId(data.data.id)
-        })
-        
-    }
+          });
+      };
 
     useEffect(()=>{
-        getUser()
-    }, [])
+        getCurrentLogin();
+        (nextClickSideMenu == 1) ? setNextClick(0) : nextClick
+    }, [nextClickSideMenu, nextClick])
 
   return (
     <div className={"w-full"}>
@@ -93,7 +136,8 @@ function Header({data}) {
       {
         (data == 'Home') ? (
             <div>
- <h4 className="font-bold text-2xl text-[#381CA9] bg-gradient-to-r from-[#57CDFF] to-[#038ACA] px-9 py-7">{`Hello,  ${role}`}</h4>                <Home />
+ <h4 className="font-bold text-2xl text-[#381CA9] bg-gradient-to-r from-[#57CDFF] to-[#038ACA] px-9 py-7">{`Hello,  ${role}`}</h4>               
+  <Home />
                 
             </div>
         )
@@ -122,10 +166,34 @@ function Header({data}) {
                             nimBorrower={nimBorrower}
                             dataSetMenuFunc={dataSetMenuFunc}
                             updateNextClick={updateNextClick}
+                            eventNameTofront={eventNameTofront}
+                            eventDescToFront={eventDescToFront}
+                            floorIdToFront={floorIdToFront}
+                            roomIdToFront={roomIdToFront}
+                            shiftIdToFront={shiftIdToFront}
+                            reservationDateToFront={reservationDateToFront}
+                            
+
                             />
                         )
                         : (nextClick == 2) ? <DetailRoom updateNextClick={updateNextClickDetailRoom} />
-                        : (nextClick == 3) ? <InventoryRequest/>
+                        : (nextClick == 3) ? <InventoryRequest 
+                        updateNextClick={updateNextClickSummary}
+                        requestInventoryBorrow={requestInventoryBorrow}
+                        />
+                        : (nextClick == 4) ? <Summary 
+                        name={nameBorrower}
+                        nim={nimBorrower}
+                        email={emailBorrower}
+                        eventName={eventName}
+                        eventDescription={eventDesc}
+                        floorId={getSelectFloor}
+                        roomId={getRoomId}
+                        shiftId={getSelectShift}
+                        reservationDate={getDate}
+                        inventoryId={request}
+
+                        />
                         :
                         <></>
                     }

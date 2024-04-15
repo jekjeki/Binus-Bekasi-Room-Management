@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios"
 
 function FormBorrowerData({nextButtonClick, nameToParent, nimToParent, emailToParent}) {
 
@@ -6,6 +7,33 @@ function FormBorrowerData({nextButtonClick, nameToParent, nimToParent, emailToPa
     const [name, setName] = useState('')
     const [nim, setNim] = useState('')
     const [email, setEmail] = useState('')
+    const [error, setError] = useState("")
+
+    // validate form borrower 
+    const validateFormBorrower = () => {
+      axios.post(`http://localhost:8081/data/validate-form-borrower`, {
+        "name": name, 
+        "email": email, 
+        "nim": nim
+      })
+      .then((res)=>{
+        console.log(res.data.statuscode == 200)
+        // status code 200
+          setNextClick(true);
+          if(res.data.statuscode == 200){
+            nextButtonClick(1)
+          }
+          nameToParent(name);
+          nimToParent(nim);
+          emailToParent(email)
+          // (nextClick) ? nextButtonClick(1) : 0
+      })
+      .catch((err)=>{
+        console.log(err.response.data.message)
+        setError(err.response.data.message)
+      })
+
+    }
 
   return (
     <div className="w-4/5 bg-white drop-shadow-2xl rounded-[20px]">
@@ -59,16 +87,20 @@ function FormBorrowerData({nextButtonClick, nameToParent, nimToParent, emailToPa
       </div>
       <div className="px-5 py-4 flex justify-center align-center">
         <button onClick={()=>{
-            setNextClick(true);
-            (nextClick) ? nextButtonClick(1) : 0
-            nameToParent(name);
-            nimToParent(nim);
-            emailToParent(email)
+            validateFormBorrower()
 
         }} className="bg-[#57B4FF] text-white font-bold w-28 rounded-[20px] px-1 py-2">
           Next
         </button>
       </div>
+      {
+        error.length != 0 ? 
+        <div className="text-xl text-red text-center">
+          <h1>{error}</h1>
+        </div>
+        :
+        <></>
+      }
     </div>
   );
 }

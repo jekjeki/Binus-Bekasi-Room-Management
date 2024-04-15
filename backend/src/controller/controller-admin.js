@@ -149,7 +149,7 @@ const getDataOneAdmin = (req, res) => {
     !req.headers.authorization.startsWith("Bearer") ||
     !req.headers.authorization.split(" ")[1]
   ) {
-    return res.status.json({
+    return res.send.json({
       message: "eror token",
     });
   }

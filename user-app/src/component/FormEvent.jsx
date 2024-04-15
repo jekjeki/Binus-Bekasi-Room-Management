@@ -5,12 +5,14 @@ import { getQrCode } from "../../../backend/src/utils/generatorQrCode";
 import Notification from "./notification/Notification";
 import { useNavigate } from "react-router-dom";
 
-function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetMenuFunc, updateNextClick }) {
+function FormEvent({ updateNextClick, eventNameTofront, eventDescToFront, floorIdToFront, roomIdToFront, shiftIdToFront, reservationDateToFront}) {
   const [floorArr, setFloorArr] = useState([]);
   const [getRoomArr, setRoomArr] = useState([]);
   const [getShiftArr, setShiftArr] = useState([]);
   const navigate = useNavigate();
-  const [nextClick, setNextCLick] = useState(true)
+  const [nextClick, setNextClick] = useState(true)
+  const [floorClick, setFloorClick] = useState(false)
+     const [okClickModal, setOkClickModal] = useState(false);
 
   const [getSelectFloor, setSelectFloor] = useState("FL001");
   const [getSelectShift, setSelectShift] = useState( "SH001" );
@@ -20,29 +22,17 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
   const [eventName, setEventName] = useState("");
   const [eventDesc, setEventDesc] = useState("");
 
-  const [floorClick, setFloorClick] = useState(false)
 
-  const [saveClick, setSaveClick] = useState(false);
+  const [error, setError] = useState("")
 
-  const [okClickModal, setOkClickModal] = useState(false);
-  const [qr, setQr] = useState("")
-  const [roomAvailables, setRoomAvailables] = useState([])
+ 
 
   const minDate = () => {
     const today = new Date().toISOString().split("T")[0];
     return today;
   };
 
-  // generate id for borrower
-  let id1 = Math.floor(Math.random() * 9) + 1;
-  let id2 = Math.floor(Math.random() * 9) + 1;
-  let id3 = Math.floor(Math.random() * 9) + 1;
-
-  let id1_str = id1.toString();
-  let id2_str = id2.toString();
-  let id3_str = id3.toString();
-
-  let fixedIdBorrower = "BR" + id1_str + id2_str + id3_str;
+  
 
   // modal clicked ok
   // const OkClicked = (click) => {
@@ -50,175 +40,73 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
   //   setSaveClick(false);
   // };
 
-  // insert borrower data
-  const insertDataBorrower = async () => {
-    await fetch(`http://localhost:${process.env.PORT}/data/insert-data-borrower`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json;charset=UTF-8",
-      },
-      body: JSON.stringify({
-        borrowerId: fixedIdBorrower,
-        borrowerName: nameBorrower,
-        borrowerNim: nimBorrower,
-        borrowerEmail: emailBorrower,
-      }),
-    }).then((res) => res.json());
-  };
+  
 
-  // generate event id
-  let ide1 = Math.floor(Math.random() * 9) + 1;
-  let ide2 = Math.floor(Math.random() * 9) + 1;
-  let ide3 = Math.floor(Math.random() * 9) + 1;
-
-  let ide1_str = ide1.toString();
-  let ide2_str = ide2.toString();
-  let ide3_str = ide3.toString();
-
-  let fixedEventId = "EV" + ide1_str + ide2_str + ide3_str;
-
-  // insert event data
-  const insertEventData = async () => {
-    await fetch(`http://localhost:${process.env.PORT}/data/insert-event-data`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json;charset=UTF-8",
-      },
-      body: JSON.stringify({
-        eventId: fixedEventId,
-        eventName: eventName,
-        eventDescription: eventDesc,
-      }),
-    }).then((res) => res.json());
-  };
-
-  // insert data reservation
-  const insertDataReservation = async () => {
-    
-
-    // data filter first 
-    const filters = roomAvailables.filter((data)=>
-      data.ShiftId == getSelectShift && data.RoomId == getRoomId
-      )
-
-      console.log(filters)
-
-      if(filters[0].isAvail == 1){
-
-      //   // masukkan data reservasi
-        await fetch(`http://localhost:${process.env.PORT}/data/insert-data-reservation`, {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-          },
-          body: JSON.stringify({
-            borrowerId: fixedIdBorrower,
-            adminId: adminId,
-            roomId: getRoomId,
-            eventId: fixedEventId,
-            reservationDate: getDate,
-            shiftId : getSelectShift,
-            status: "waiting approval",
-            roomAvailableId: filters[0].RoomAvailableId
-          }),
-        });
-
-      // //   // api for update isAvail in table RoomAvailable
-        await fetch(`http://localhost:${process.env.PORT}/data/update-room-isavail/${filters[0].RoomAvailableId}`, {
-          method: 'PATCH',
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-          },
-          body: JSON.stringify({
-            isAvail: 0
-          })
-        })
-      }
-
-
-    setSaveClick(true);
-  };
-
-  // get data floor
-  const getAllFloor = async () => {
-    axios
-      .get(`http://localhost:${process.env.PORT}/data/get-all-floor`)
-      .then((res) => {
-      
-        setFloorArr(res.data.data);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  //  get room data based floor
-  const getRoomBaseFloor = async () => {
-
-    axios
-      .get(`http://localhost:${process.env.PORT}/data/get-room-at-floor`)
-      .then((res) => {
-        setRoomArr(res.data.data);
-      })
-      .catch((err) => console.log(err));
-  };
-
- 
-
-  // get all shift data
-  const getAllShift = async () => {
-    axios
-      .get(`http://localhost:${process.env.PORT}/data/get-shift-room`)
-      .then((res) => {
-        setShiftArr(res.data.data);
-        console.log(res.data.data)
-
-        getShiftArr.length == 0 ? setSelectShift(res.data.data[0]["ShiftId"]) : setSelectShift("SH001")
-      })
-      .catch((err) => console.log(err));
-  };
-
-  // send the email base on borrower data 
-  const sendEmailToBorrower = async () => {
-    axios.post(`http://localhost:8081/admin/send-email`, {
-      email: emailBorrower,
-      borrowerName: nameBorrower,
-      nim: nimBorrower,
-      date: getDate,
-    })
-    .then((res)=>{
-      console.log(res)
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
-
-    
-  }
-
-  // generate QR CODE 
-  const generateQRCode = useCallback(()=>{
-    const qrVal = getQrCode(eventName)
-    if(!qrVal) return
-    setQr(eventName)
-  }, [eventName, setQr])
-
-  // get room available data 
-  const getRoomAvailableData = async () => {
-    axios.get(`http://localhost:${process.env.PORT}/data/get-all-room-available`)
-    .then((res)=>{
-      setRoomAvailables(res.data.data)
-    })
-    .catch((err)=>{
-      console.log(err)
+  // get floor all data 
+  const getAllFloorData = () => {
+    axios.get(`http://localhost:8081/data/get-all-floor`)
+    .then((data)=>{
+      console.log(data.data.data)
+      setFloorArr(data.data.data)
     })
   }
 
-  useEffect(() => {
-    getAllFloor();
-    getRoomBaseFloor();
-    getAllShift();
-    getRoomAvailableData()
+  // get room base floor 
+  const getSelectedFloor = (e) => {
+    axios.get(`http://localhost:8081/data/get-room-at-floor/${e.target.value}`)
+    .then((data)=>{
+      console.log(data.data.results)
+      setRoomArr(data.data.results)
+    })
+  }
 
-  }, []);
+  // get shift data room
+  const getShiftRoom = (e) => {
+    axios.get(`http://localhost:8081/data/get-shift-room/${e.target.value}`)
+    .then((res)=>{
+      // console.log(res.data.data)
+      setShiftArr(res.data.data)
+    })
+  }
+
+  //validation form event borrow
+  const validateFormEvent = () => {
+    axios.post(`http://localhost:8081/data/validation-form-event-room-data`, {
+      "eventName": eventName,
+      "eventDescription": eventDesc,
+      "floorId":  getSelectFloor,
+      "roomId": getRoomId,
+      "shiftId": getSelectShift,
+      "reservationDate": getDate
+    })
+    .then((res)=>{
+      console.log(res.data.statuscode == 200)
+      // status code 200
+        setNextClick(true);
+        if(res.data.statuscode == 200){
+          updateNextClick(2)
+          eventNameTofront(eventName)
+          eventDescToFront(eventDesc)
+          floorIdToFront(getSelectFloor)
+          roomIdToFront(getRoomId)
+          shiftIdToFront(getSelectShift)
+          reservationDateToFront(getDate)
+          // ke summary
+        
+          // console.log('data saved')
+          // dataSetMenuFunc(true)
+        }
+        // (nextClick) ? nextButtonClick(1) : 0
+    })
+    .catch((err)=>{
+      console.log(err.response.data.message)
+      setError(err.response.data.message)
+    })
+  }
+
+  useEffect(()=>{
+    getAllFloorData()
+  }, [])
 
   return (
     <div className={"w-4/5"}>
@@ -267,7 +155,9 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
               id="floor"
               onChange={(e) => {
                 setFloorClick(true)
-                setSelectFloor(e.target.value)}}
+                console.log(e.target.value)
+                getSelectedFloor(e)
+                }}
               className="w-full rounded-[10px] border border-2 px-3 py-1"
             >
               {floorArr.map((fl, idx) => {
@@ -292,7 +182,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
               placeholder="room"
               className="w-full rounded-[10px] border border-2 px-3 py-1"
               onChange={(e) => {
-                setRoomId(e.target.value);
+                getShiftRoom(e)
               }}
             >
               {getRoomArr.map((gr, idx) => {
@@ -356,14 +246,7 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
               // console.log(getRatId[0].RATId);
 
               // if(getRatId.length != 0){
-                
-                insertEventData()
-                insertDataBorrower()
-                insertDataReservation()
-                generateQRCode()
-                sendEmailToBorrower()
-                console.log('data saved')
-                dataSetMenuFunc(true)
+               
 
               // }
 
@@ -372,13 +255,20 @@ function FormEvent({ nameBorrower, nimBorrower, emailBorrower, adminId, dataSetM
             Save
           </button> */}<button 
           onClick={()=>{
-            setNextCLick(true);
-            (nextClick) ? updateNextClick(2) : 0
+            validateFormEvent()
           }}className="bg-[#57B4FF] text-white font-bold w-28 rounded-[20px] px-1 py-2"
           >Next</button>
         </div>
+        {
+        error.length != 0 ? 
+        <div className="text-xl text-red text-center">
+          <h1>{error}</h1>
+        </div>
+        :
+        <></>
+      }
       </div>
-      {saveClick && <Notification />}
+      {/* {saveClick && <Notification />} */}
     </div>
   );
 }
