@@ -2,81 +2,70 @@ import React, { useState } from "react";
 import logo from '../images/Logo2.png'
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import {Layout, Menu} from "antd"
+import {
+  HomeOutlined,
+  AppstoreAddOutlined,
+  UnorderedListOutlined,
+} from "@ant-design/icons";
 
-
+const {Sider} = Layout
 
 function SideMenu({ menuToParent, role, nextButtonClick }) {
 
     const [menu, setMenu] = useState('Home')
     const [data, setData] = useState('')
-
     const navigate = useNavigate()
+    const [collapsed, setCollapsed] = useState(false)
+
+    // handle menu click 
+    const handleMenuClick = ({key}) => {
+      setMenu(key)
+      menuToParent(key)
+      switch (key){
+        case "Home":
+          nextButtonClick(1)
+          navigate(role == "LSC" ? '/home-lsc' : '/manager-dashboard')
+          break; 
+          case "Create Reservation":
+            navigate("/create-reservation");
+            break;
+          case "RoomAvailable":
+            navigate("/home-lsc");
+            break;
+          default:
+            break;
+      }
+    }
 
   return (
-    <div className="w-[200px] h-[125vh] justify-evenly bg-white ">
-      <div className="flex-col">
-      <Link to={(role=='LSC')?'/home-lsc':'/manager-dashboard'} className="flex">
-      <div className="flex justify-content bg-[#57CDFF] h-full">
-        <img src={logo} alt="" />
+    <Sider
+    theme="dark"
+    collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} width={200}>
+      <div className="logo flex justify-center py-4">
+        <Link to={role === "LSC" ? "/home-lsc" : "/manager-dashboard"}>
+          <img src={logo} alt="Logo" style={{ width: collapsed ? "40px" : "100px" }} />
+        </Link>
       </div>
-      </Link>
-        <div className="py-5">
-          <p
-            onClick={() => {
-                // navigate('/home-lsc')
-                setMenu('Home')
-                menuToParent(menu)
-                nextButtonClick(1)
-            }}
-            className={menu == "Home" ? "font-bold text-white bg-[#F08700] py-3 px-3" : "text-[#AAADB6] px-3"}
-          >
-            Home
-          </p>
-        </div>
-        {
-          
-          (role == 'LSC') ? (
-            <div className="py-2">
-              <p
-                onClick={() => {
-                  setMenu('Create Reservation');
-                  menuToParent(menu)
-                //   navigate('/create-reservation')
-                }}
-                className={
-                  menu == "Create Reservation"
-                    ? "font-bold text-white bg-[#F08700] py-3 px-3"
-                    : "text-[#AAADB6] px-3"
-                }
-              >
-                Create Reservation
-              </p>
-            </div>
-          ) :  (
-            <div>
-
-            </div>
-          )
-        }
-        <div
-         onClick={()=>{
-          setMenu('Room Available')
-          menuToParent(menu)
-          navigate('/home-lsc')
-        }}
-        className="py-2">
-          <p
-           
-
-            className={
-              menu == 'Room Available' ? "font-bold text-white bg-[#F08700] py-3 px-3" : "text-[#AAADB6] px-3"
-            }
-          >
-            Room Available
-          </p>
-        </div>
-      </div>
-    </div>
+      <Menu
+        theme="dark"
+        mode="inline"
+        selectedKeys={[menu]}
+        onClick={handleMenuClick}
+      >
+        <Menu.Item key="Home" icon={<HomeOutlined />}>
+          Home
+        </Menu.Item>
+        {role === "LSC" && (
+          <Menu.Item key="CreateReservation" icon={<AppstoreAddOutlined />}>
+            Create Reservation
+          </Menu.Item>
+        )}
+        <Menu.Item key="RoomAvailable" icon={<UnorderedListOutlined />}>
+          Room Available
+        </Menu.Item>
+      </Menu>
+    </Sider>
   );
 }
 

@@ -1,8 +1,6 @@
 import React from 'react'
-import SideMenu from '../component/SideMenu'
-import Header from '../component/Header'
 
-function CreateReservation() {
+function ListRoomPage() {
   return (
     <div className='w-screen h-screen'>
         <div className='flex w-full h-full'>
@@ -13,4 +11,4 @@ function CreateReservation() {
   )
 }
 
-export default CreateReservation
+export default ListRoomPage

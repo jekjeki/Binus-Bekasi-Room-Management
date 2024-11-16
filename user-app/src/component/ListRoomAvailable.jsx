@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import {Table, Tag} from "antd"
 
 function ListRoomAvailable() {
   const [roomAvailables, setRoomAvailables] = useState([]);
@@ -17,6 +18,45 @@ function ListRoomAvailable() {
       });
   };
 
+  // define all columns table 
+  const columns = [
+    {
+      title: "Room ID", 
+      dataIndex: "RoomId", 
+      key: "RoomId"
+    }, 
+    {
+      title: "Floor Name", 
+      dataIndex: "FloorId", 
+      key: "FloorId"
+    }, 
+    {
+      title: "Room Name", 
+      dataIndex: "RoomName", 
+      key: "RoomName"
+    }, 
+    {
+      title: "Shift", 
+      dataIndex: "ShiftName", 
+      key: "ShiftName"
+    }, 
+    {
+      title: "Status", 
+      key: 'isAvail', 
+      render: (text, record) => (
+        <span>
+          {
+            record.isAvail == 1 ? (
+              <Tag color="green" key={record.isAvail}>Available</Tag>
+            ) : (
+              <span style={{ color: "red" }}>Not Available</span>
+            )
+          }
+        </span>
+      )
+    }
+  ]
+
   useEffect(() => {
     getAllRoomAvailable();
   }, []);
@@ -26,53 +66,14 @@ function ListRoomAvailable() {
   
 
   return (
-    <table className="text-left rounded-lg">
-      <thead className="bg-sky-300">
-        <tr className="">
-          <th scope="col" className="px-6 py-3">
-            Room Id
-          </th>
-          <th scope="col" className="px-6 py-3">
-            Floor
-          </th>
-          <th scope="col" className="px-6 py-3">
-            Room 
-          </th>
-          <th scope="col" className="px-6 py-3">
-            Shift
-          </th>
-          <th scope="col" className="px-6 py-3">
-            Status
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-            avails.map((ra, idx)=>{
-                console.log(ra)
-                return( 
-                    <tr key={idx} className="text-center border border-1">
-                        <td className="px-1 py-2">
-                            {ra.RoomId}
-                        </td>
-                        <td className="px-1 py-2">
-                            {ra.FloorName}
-                        </td>
-                        <td className="px-1 py-2">
-                            {ra.RoomName}
-                        </td>
-                        <td className="px-1 py-2">
-                            {ra.ShiftName}
-                        </td>
-                        <td>
-                            {(ra.isAvail==1) && 'available'}
-                        </td>
-                    </tr>
-                )
-            })
-        }
-      </tbody>
-    </table>
+    <Table
+      columns={columns}
+      dataSource={avails}
+      rowKey={(record)=>record.RoomAvailableId}
+      pagination={{ pageSize: 10 }}
+      size="large"
+      bordered
+    />
   );
 }
 
