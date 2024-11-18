@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios"
 
-function FormBorrowerData({nextButtonClick, nameToParent, nimToParent, emailToParent}) {
+function FormBorrowerData({ setNextClick ,nameToParent, nimToParent, emailToParent}) {
 
-    const [nextClick, setNextClick] = useState(false)
     const [name, setName] = useState('')
     const [nim, setNim] = useState('')
     const [email, setEmail] = useState('')
@@ -17,20 +16,21 @@ function FormBorrowerData({nextButtonClick, nameToParent, nimToParent, emailToPa
         "nim": nim
       })
       .then((res)=>{
-        console.log(res.data.statuscode == 200)
+        console.log(res.data)
         // status code 200
-          setNextClick(true);
+          
           if(res.data.statuscode == 200){
+            setNextClick(1);
             nextButtonClick(1)
+            nameToParent(name);
+            nimToParent(nim);
+            emailToParent(email)
           }
-          nameToParent(name);
-          nimToParent(nim);
-          emailToParent(email)
           // (nextClick) ? nextButtonClick(1) : 0
       })
       .catch((err)=>{
-        console.log(err.response.data.message)
-        setError(err.response.data.message)
+        console.log(err)
+        
       })
 
     }

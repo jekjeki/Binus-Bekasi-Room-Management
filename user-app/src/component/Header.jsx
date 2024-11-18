@@ -67,15 +67,8 @@ function Header({data, nextClickSideMenu}) {
         {data == "CreateReservation" && (
             <CreateReservation
                 role={role}
-                borrower={borrower}
-                eventDetails={eventDetails}
-                inventoryRequest={inventoryRequest}
                 setNextClick={setNextClick}
                 nextClick={nextClick}
-                updateBorrower={updateBorrower}
-                updateEventDetails={updateEventDetails}
-                setInventoryRequest={setInventoryRequest}
-                setNextClickLast={setNextClickLast}
             />
         )}
 

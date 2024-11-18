@@ -5,25 +5,8 @@ import { getQrCode } from "../../../backend/src/utils/generatorQrCode";
 import Notification from "./notification/Notification";
 import { useNavigate } from "react-router-dom";
 
-function FormEvent({ updateNextClick, eventNameTofront, eventDescToFront, floorIdToFront, roomIdToFront, shiftIdToFront, reservationDateToFront}) {
-  const [floorArr, setFloorArr] = useState([]);
-  const [getRoomArr, setRoomArr] = useState([]);
-  const [getShiftArr, setShiftArr] = useState([]);
-  const navigate = useNavigate();
-  const [nextClick, setNextClick] = useState(true)
-  const [floorClick, setFloorClick] = useState(false)
-     const [okClickModal, setOkClickModal] = useState(false);
-
-  const [getSelectFloor, setSelectFloor] = useState("FL001");
-  const [getSelectShift, setSelectShift] = useState( "SH001" );
-  const [getRoomId, setRoomId] = useState("RO001");
-  const [getDate, setDate] = useState("");
-
-  const [eventName, setEventName] = useState("");
-  const [eventDesc, setEventDesc] = useState("");
-
-
-  const [error, setError] = useState("")
+function FormEvent() {
+  
 
  
 
@@ -47,7 +30,7 @@ function FormEvent({ updateNextClick, eventNameTofront, eventDescToFront, floorI
     axios.get(`http://localhost:8081/data/get-all-floor`)
     .then((data)=>{
       console.log(data.data.data)
-      setFloorArr(data.data.data)
+      // setFloorArr(data.data.data)
     })
   }
 
@@ -123,10 +106,8 @@ function FormEvent({ updateNextClick, eventNameTofront, eventDescToFront, floorI
               id="event"
               className="w-full rounded-[10px] border border-2 px-3 py-1"
               placeholder="Event Name"
-              value={eventName}
-              onChange={(e) => {
-                setEventName(e.target.value);
-              }}
+        
+              
             />
           </div>
         </div>
@@ -138,10 +119,7 @@ function FormEvent({ updateNextClick, eventNameTofront, eventDescToFront, floorI
             <textarea
               className="w-full rounded-[10px] border border-2 px-3 py-1"
               placeholder="Event Description"
-              value={eventDesc}
-              onChange={(e) => {
-                setEventDesc(e.target.value);
-              }}
+              
             ></textarea>
           </div>
         </div>
@@ -153,21 +131,16 @@ function FormEvent({ updateNextClick, eventNameTofront, eventDescToFront, floorI
             <select
               name=""
               id="floor"
-              onChange={(e) => {
-                setFloorClick(true)
-                console.log(e.target.value)
-                getSelectedFloor(e)
-                }}
+              
               className="w-full rounded-[10px] border border-2 px-3 py-1"
             >
-              {floorArr.map((fl, idx) => {
+              {/* {floorArr.map((fl, idx) => {
                 return (
-                  <option key={idx}
-                  value={fl.FloorId}>
-                    {fl.FloorName}
+                  <option>
+                  
                   </option>
                 );
-              })}
+              })} */}
             </select>
           </div>
         </div>
@@ -181,17 +154,15 @@ function FormEvent({ updateNextClick, eventNameTofront, eventDescToFront, floorI
               id="room"
               placeholder="room"
               className="w-full rounded-[10px] border border-2 px-3 py-1"
-              onChange={(e) => {
-                getShiftRoom(e)
-              }}
+             
             >
-              {getRoomArr.map((gr, idx) => {
+              {/* {getRoomArr.map((gr, idx) => {
                 return (
                   <option key={idx} value={gr["RoomId"]}>
-                    {gr["RoomName"]}
+                    
                   </option>
                 );
-              })}
+              })} */}
             </select>
           </div>
         </div>
@@ -205,17 +176,15 @@ function FormEvent({ updateNextClick, eventNameTofront, eventDescToFront, floorI
               id="shift"
               placeholder="shift"
               className="w-full rounded-[10px] border border-2 px-3 py-1"
-              onChange={(e) => {
-                 setSelectShift(e.target.value) 
-              }}
+              
             >
-              {getShiftArr.map((gs, idx) => {
+              {/* {getShiftArr.map((gs, idx) => {
                 return (
                   <option key={idx} value={gs["ShiftId"]}>
                     {gs["ShiftName"]}
                   </option>
                 );
-              })}
+              })} */}
             </select>
           </div>
         </div>
@@ -230,7 +199,7 @@ function FormEvent({ updateNextClick, eventNameTofront, eventDescToFront, floorI
               name="date"
               id="date"
               min={minDate()}
-              value={getDate}
+              // value={}getDate
               onChange={(e) => {
                 setDate(e.target.value);
               }}
@@ -238,34 +207,19 @@ function FormEvent({ updateNextClick, eventNameTofront, eventDescToFront, floorI
           </div>
         </div>
         <div className="px-5 py-2 flex justify-center align-center">
-          {/* <button
-            className=" px-1 py-2 rounded-[20px] text-white font-bold w-[200px] bg-[#57B4FF]"
-            onClick={() => {
-              // getRoomAvailableTransaction();
-              console.log(getDate);
-              // console.log(getRatId[0].RATId);
-
-              // if(getRatId.length != 0){
-               
-
-              // }
-
-            }}
-          >
-            Save
-          </button> */}<button 
+          <button 
           onClick={()=>{
             validateFormEvent()
           }}className="bg-[#57B4FF] text-white font-bold w-28 rounded-[20px] px-1 py-2"
           >Next</button>
         </div>
         {
-        error.length != 0 ? 
-        <div className="text-xl text-red text-center">
-          <h1>{error}</h1>
-        </div>
-        :
-        <></>
+        // error.length != 0 ? 
+        // <div className="text-xl text-red text-center">
+        //   <h1></h1>
+        // </div>
+        // :
+        // <></>
       }
       </div>
       {/* {saveClick && <Notification />} */}

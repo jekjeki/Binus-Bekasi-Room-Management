@@ -1,10 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import FormBorrowerData from './FormBorrowerData';
+import DetailRoom from './DetailRoom';
+import InventoryRequest from './InventoryRequest';
+import Summary from './Summary';
+import FormEvent from './FormEvent';
+
 
 const CreateReservation = ({
-    role, borrower, eventDetails, inventoryRequest, setNextClick, nextClick,
-    updateBorrower, updateEventDetails, setInventoryRequest, setNextClickLast
-  }) => (
+    role, setNextClick, nextClick,
+  }) => {
+    
+    const [borrower, setBorrower] = useState({
+      name: '',
+      nim: '', 
+      email: ''
+    })
+
+    const updateBorrower = (key, value) => {
+      setBorrower((prev)=>({
+        ...prev, 
+        [key]: value
+      }))
+    }
+
+    return (
     <div>
       <h4 className="font-bold text-2xl text-[#381CA9] bg-gradient-to-r from-[#57CDFF] to-[#038ACA] px-9 py-7">
         {`Hello, ${role}`}
@@ -15,17 +34,18 @@ const CreateReservation = ({
       <div className="py-3 container w-full h-3/4 flex justify-center items-center">
         {nextClick === 0 && (
           <FormBorrowerData
-            updateBorrower={updateBorrower}
             setNextClick={setNextClick}
+            nimToParent={(nim)=>updateBorrower("nim", nim)}
+            nameToParent={(name)=>updateBorrower("name", name)}
+            emailToParent={(email)=>updateBorrower("email", email)}
           />
         )}
         {nextClick === 1 && (
           <FormEvent
-            adminId={adminId}
+            
             borrower={borrower}
-            setNextClickLast={setNextClickLast}
             setNextClick={setNextClick}
-            updateEventDetails={updateEventDetails}
+            
           />
         )}
         {nextClick === 2 && (
@@ -46,6 +66,6 @@ const CreateReservation = ({
         )}
       </div>
     </div>
-  );
+  );}
 
 export default CreateReservation
