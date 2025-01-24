@@ -5,26 +5,8 @@ function HeaderDetail({ reservationTransactionId }) {
 
   const [role, setRole] = useState('')
 
-  const getUser = async () => {
-    await fetch(`http://localhost:${process.env.PORT}/admin/get-one-admin`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json;charset=UTF-8",
-        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
-      },
-    })
-    .then((res)=>res.json())
-    .then((data)=>{
-      setRole(data.data.AdminRole)
-    })
-  }
-
-  useEffect(()=>{
-    getUser()
-  })
-
   return (
-    <div className="xl:w-[1240px] h-[150px]  bg-gradient-to-r from-[#57CDFF] to-[#038ACA] relative">
+    <div className="h-[150px]  bg-gradient-to-r from-[#57CDFF] to-[#038ACA] relative">
       <div className="flex underline underline-offset-2 px-8 py-2 decoration-sky-500">
         <Link to={(role=='LSC')?'/home-lsc':'/manager-dashboard'} className="flex">
           <svg

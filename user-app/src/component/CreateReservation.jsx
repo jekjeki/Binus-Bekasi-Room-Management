@@ -16,8 +16,23 @@ const CreateReservation = ({
       email: ''
     })
 
+    const [events, setEvents] = useState({
+      eventName: '', 
+      eventDesc: '', 
+      facilityid: '', 
+      meetingTimes: '', 
+      startDate: ''
+    })
+
     const updateBorrower = (key, value) => {
       setBorrower((prev)=>({
+        ...prev, 
+        [key]: value
+      }))
+    }
+
+    const updateEventMeeting = (key, value) => {
+      setEvents((prev)=>({
         ...prev, 
         [key]: value
       }))
@@ -38,30 +53,24 @@ const CreateReservation = ({
             nimToParent={(nim)=>updateBorrower("nim", nim)}
             nameToParent={(name)=>updateBorrower("name", name)}
             emailToParent={(email)=>updateBorrower("email", email)}
+            binusianIDToParent={(binusianid)=>updateBorrower("binusianID", binusianid)}
           />
         )}
         {nextClick === 1 && (
           <FormEvent
-            
-            borrower={borrower}
+            eventNameTofront={(eventName)=>updateEventMeeting("eventName", eventName)}
+            eventDescToFront={(eventDesc)=>updateEventMeeting("eventDesc", eventDesc)}
+            roomIdToFront={(facilityid)=>updateEventMeeting("facilityid", facilityid)}
+            shiftIdToFront={(meetingTimes)=>updateEventMeeting("meetingTimes", meetingTimes)}
+            reservationDateToFront={(getDate)=>updateEventMeeting("startDate", getDate)}
             setNextClick={setNextClick}
             
           />
         )}
-        {nextClick === 2 && (
-          <DetailRoom setNextClick={setNextClick} />
-        )}
-        {nextClick === 3 && (
-          <InventoryRequest
-            setNextClick={setNextClick}
-            setInventoryRequest={setInventoryRequest}
-          />
-        )}
-        {nextClick === 4 && (
-          <Summary
+        {nextClick == 2 && (
+          <Summary 
             borrower={borrower}
-            eventDetails={eventDetails}
-            inventoryRequest={inventoryRequest}
+            events={events}
           />
         )}
       </div>

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {Layout, Menu} from "antd"
 import {
+  CloudUploadOutlined,
+  DownloadOutlined,
   HomeOutlined,
   AppstoreAddOutlined,
   UnorderedListOutlined,
@@ -22,20 +24,23 @@ function SideMenu({ menuToParent, role, nextButtonClick }) {
     const handleMenuClick = ({key}) => {
       setMenu(key)
       menuToParent(key)
-      switch (key){
-        case "Home":
-          nextButtonClick(1)
-          navigate(role == "LSC" ? '/home-lsc' : '/manager-dashboard')
-          break; 
-          case "Create Reservation":
-            navigate("/create-reservation");
-            break;
-          case "RoomAvailable":
-            navigate("/home-lsc");
-            break;
-          default:
-            break;
-      }
+      // switch (key){
+      //   case "Home":
+      //     nextButtonClick(1)
+      //     navigate(role == "LSC" ? '/home-lsc' : '/manager-dashboard')
+      //     break; 
+      //     case "Create Reservation":
+      //       navigate("/create-reservation");
+      //       break;
+      //     case "RoomAvailable":
+      //       navigate("/home-lsc");
+      //       break;
+      //     case "UploadSchedule": 
+      //       navigate('/upload-sheet-data')
+      //       break;
+      //     default:
+      //       break;
+      // }
     }
 
   return (
@@ -50,6 +55,7 @@ function SideMenu({ menuToParent, role, nextButtonClick }) {
       <Menu
         theme="dark"
         mode="inline"
+        style={{height: '130vh'}}
         selectedKeys={[menu]}
         onClick={handleMenuClick}
       >
@@ -61,8 +67,14 @@ function SideMenu({ menuToParent, role, nextButtonClick }) {
             Create Reservation
           </Menu.Item>
         )}
-        <Menu.Item key="RoomAvailable" icon={<UnorderedListOutlined />}>
+        {/* <Menu.Item key="RoomAvailable" icon={<UnorderedListOutlined />}>
           Room Available
+        </Menu.Item> */}
+        <Menu.Item key={'UploadSchedule'} icon={<CloudUploadOutlined />}>
+          Upload Data
+        </Menu.Item>
+        <Menu.Item key={'DownloadSchedule'} icon={<DownloadOutlined />}>
+          Download Schedule
         </Menu.Item>
       </Menu>
     </Sider>

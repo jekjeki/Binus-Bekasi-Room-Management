@@ -116,19 +116,17 @@ const loginAdmin = (req, res) => {
 
   db.query(
     `
-    SELECT * FROM Admin WHERE AdminName = ${db.escape(req.body.name)} 
-    AND password = '${req.body.password}'
+    SELECT * FROM Admin WHERE AdminName = '${req.body.name}' AND password = '${req.body.password}'
     `,
     (err, result) => {
       if (err) throw err;
 
-      if (!result.length) {
+      if (result.length == 0) {
         return res.status(401).send({
           msg: "username is invalid!",
         });
       }
-
-      const token = jwt.sign({ id: result[0].id }, "the-super-strong-secret", {
+      const token = jwt.sign({ id: result[0].AdminID }, "the-super-strong-secret", {
         expiresIn: "1h",
       });
 
@@ -149,17 +147,17 @@ const getDataOneAdmin = (req, res) => {
     !req.headers.authorization.startsWith("Bearer") ||
     !req.headers.authorization.split(" ")[1]
   ) {
-    return res.send.json({
+    return res.status(404).send({
       message: "eror token",
     });
   }
 
   const token = req.headers.authorization.split(" ")[1];
   const decoded = jwt.verify(token, "the-super-strong-secret");
-  console.log(decoded.id);
+  console.log(decoded);
   db.query(
-    `SELECT * FROM Admin WHERE id = ?`,
-    decoded.id,
+    `SELECT * FROM Admin WHERE AdminID = ?`,
+    [decoded.id],
     function (error, results) {
       if (error) throw error;
       return res.send({ data: results[0] });

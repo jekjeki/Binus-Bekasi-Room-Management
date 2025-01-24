@@ -1,8 +1,6 @@
 const router = require('express').Router()
 const data = require('../controller')
-const { ratIdValidation } = require('../validations/validation')
 
-router.get('/get-all-floor', data.data.getFloor)
 router.get('/get-room-at-floor/:floorId', data.data.getRoomBaseSelect)
 router.get('/get-shift-room/:roomId', data.data.getAllShift)
 
@@ -10,15 +8,8 @@ router.get('/get-shift-room/:roomId', data.data.getAllShift)
 router.get('/get-all-reservation', data.data.getAllBookingReservation)
 router.get('/get-one-reservation/:reservationTransactionId', data.data.getOneReservationDetailPage)
 router.get('/get-detail-component-data/:reservationTransactionId', data.data.getDetailComponentReservation)
-router.get('/filter-data-by-date/:date', data.data.getDataBasedOnFilterDate)
-// router.get('/get-room-available-transaction', data.data.getRoomAvailableTransaction)
-router.get('/get-all-room-available', data.data.getRoomIsAvail);
+router.get('/filter-data-by-date', data.data.getDataBasedOnFilterDate)
 
-router.get('/get-all-room-isAvail', data.data.getAllRoomIsAvail)
-
-router.post('/insert-data-reservation' , data.data.insertDataReservation)
-router.post('/insert-data-borrower', data.data.insertDataBorrower)
-router.post('/insert-event-data', data.data.insertEventData)
 
 router.delete('/delete-specific-data/:reservationTransactionId', data.data.deleteSpecificData)
 router.patch('/update-room-available/:roomId', data.data.updateRoomAvailableData)
@@ -40,5 +31,14 @@ router.patch('/spv-update-isavail/:reservationTransactionId', data.data.updateRo
 router.post('/validate-form-borrower', data.data.validationBorrower)
 router.post('/validation-form-event-room-data', data.data.validationRoomEventData)
 router.post('/validation-form-inventory-request', data.data.validationInventoryRequest)
+
+// get facility id
+router.get('/get-facilities', data.data.getAllFacility)
+
+/**
+ * insert data borrowing v2
+ */
+
+router.post(`/insert-data-borrowing`, data.data.insertDataBorrowing)
 
 module.exports = router

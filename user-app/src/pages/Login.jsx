@@ -34,9 +34,9 @@ function Login() {
           sessionStorage.setItem("jwt", data.token);
           
 
-          if (role == "LSC") {
+          if (role === "LSC") {
             navigate("/home-lsc");
-          } else if (role == "SPV") {
+          } else if (role === "SPV") {
             navigate("/manager-dashboard");
           }
           else if(role == "BM"){

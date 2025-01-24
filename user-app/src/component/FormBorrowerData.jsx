@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import axios from "axios"
 
-function FormBorrowerData({ setNextClick ,nameToParent, nimToParent, emailToParent}) {
+function FormBorrowerData({ setNextClick ,nameToParent, nimToParent, emailToParent, binusianIDToParent}) {
 
     const [name, setName] = useState('')
     const [nim, setNim] = useState('')
     const [email, setEmail] = useState('')
     const [error, setError] = useState("")
+    const [binusianID, setBinusianID] = useState('')
 
     // validate form borrower 
     const validateFormBorrower = () => {
       axios.post(`http://localhost:8081/data/validate-form-borrower`, {
         "name": name, 
         "email": email, 
-        "nim": nim
+        "nim": nim, 
+        "binusianid": binusianID
       })
       .then((res)=>{
         console.log(res.data)
@@ -21,10 +23,10 @@ function FormBorrowerData({ setNextClick ,nameToParent, nimToParent, emailToPare
           
           if(res.data.statuscode == 200){
             setNextClick(1);
-            nextButtonClick(1)
             nameToParent(name);
             nimToParent(nim);
             emailToParent(email)
+            binusianIDToParent(binusianID)
           }
           // (nextClick) ? nextButtonClick(1) : 0
       })
@@ -85,10 +87,24 @@ function FormBorrowerData({ setNextClick ,nameToParent, nimToParent, emailToPare
           />
         </div>
       </div>
+      <div className="px-5 py-4">
+        <div>
+          <label htmlFor="text">Binusian ID</label>
+        </div>
+        <div>
+          <input
+            id="binusianid"
+            type="text"
+            className=" w-full rounded-[10px] border border-2 px-1 py-1"
+            placeholder="Binusian ID"
+            value={binusianID}
+            onChange={(e)=>setBinusianID(e.target.value)}
+          />
+        </div>
+      </div>
       <div className="px-5 py-4 flex justify-center align-center">
         <button onClick={()=>{
             validateFormBorrower()
-
         }} className="bg-[#57B4FF] text-white font-bold w-28 rounded-[20px] px-1 py-2">
           Next
         </button>

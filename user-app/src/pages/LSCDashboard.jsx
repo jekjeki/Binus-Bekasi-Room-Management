@@ -9,7 +9,7 @@ function LSCDashboard() {
 
     const getUser = async () => {
         await fetch(`http://localhost:${process.env.PORT}/admin/get-one-admin`, {
-            method: 'POST', 
+            method: 'GET', 
             headers: {
                 'Content-type':'application/json;charset=UTF-8',
                 'Authorization':`Bearer ${sessionStorage.getItem('jwt')}`

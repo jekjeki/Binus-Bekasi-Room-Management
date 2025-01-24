@@ -12,10 +12,14 @@ app.use(bodyParser.json())
 const appRoute = require('./src/router/route-student')
 const adminRoute = require('./src/router/route-admin')
 const dataRoute = require('./src/router/route-data-event')
+
+// v2 
+const meetRouter = require('./src/router/route-meeting')
+
 app.use('/', appRoute)
 app.use('/admin', adminRoute)
 app.use('/data', dataRoute)
-
+app.use('/meetings', meetRouter)
 
 app.listen(8081, ()=>{
     console.log('run in port:8081')

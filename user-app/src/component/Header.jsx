@@ -11,6 +11,8 @@ import HeaderBanner from "./HeaderBanner";
 import HomePage from "./HomePage";
 import CreateReservation from "./CreateReservation";
 import ListRooms from "./ListRooms";
+import UploadSheet from "./UploadSheet";
+import DownloadSheet from "./DownloadSheet";
 
 
 function Header({data, nextClickSideMenu}) {
@@ -32,7 +34,7 @@ function Header({data, nextClickSideMenu}) {
 
   const getCurrentLogin = async () => {
     const response = await fetch(`http://localhost:${process.env.PORT}/admin/get-one-admin`, {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-type": "application/json;charset=UTF-8",
         Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
@@ -72,8 +74,16 @@ function Header({data, nextClickSideMenu}) {
             />
         )}
 
-        {data == "RoomAvailable" && (
+        {data === "RoomAvailable" && (
             <ListRooms role={role} />
+        )}
+
+        {data === 'UploadSchedule' && (
+          <UploadSheet role={role} />
+        )}
+
+        {data === 'DownloadSchedule' && (
+          <DownloadSheet role={role} />
         )}
 
     </div>

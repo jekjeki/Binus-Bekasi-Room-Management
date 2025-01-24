@@ -10,6 +10,8 @@ import ManagerDashboard from './pages/ManagerDashboard'
 import SPVUpdatePage from './component/SPVUpdatePage'
 import ListRoomPage from './pages/ListRoomPage'
 
+
+
 function App() {
 
   const router = createBrowserRouter(
@@ -17,9 +19,8 @@ function App() {
       <Route path='/'>
         <Route index element={<Login/>} />
         <Route path='home-lsc' element={<LSCDashboard />} />
-        <Route path='create-reservation' element={<CreateReservation />} />
         <Route path='/list-room-available' element={<ListRoomPage />} />
-        <Route path='/reservation/:reservationTransactionId' element={<DetailPage />} />
+        <Route path='/reservation/:meetingid' element={<DetailPage />} />
         <Route path='/manager-dashboard' element={<ManagerDashboard />}/>
         <Route path='/spv-update-page/:reservationTransactionId' element={<SPVUpdatePage />}/>
       </Route>

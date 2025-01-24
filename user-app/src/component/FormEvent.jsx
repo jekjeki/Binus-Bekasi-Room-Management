@@ -5,50 +5,41 @@ import { getQrCode } from "../../../backend/src/utils/generatorQrCode";
 import Notification from "./notification/Notification";
 import { useNavigate } from "react-router-dom";
 
-function FormEvent() {
+function FormEvent({setNextClick, eventNameTofront, eventDescToFront, roomIdToFront, shiftIdToFront, reservationDateToFront}) {
   
-
- 
+  const [eventName, setEventName] = useState('')
+  const [eventDesc, setEventDesc] = useState('')
+  const [facilityid, setFacilityid] = useState('')
+  const [meetingTimes, setMeetingTimes] = useState('')
+  const [getDate, setDate] = useState('')
+  const [error, setError] = useState('')
+  const [facilities, setFacilities] = useState([])
 
   const minDate = () => {
     const today = new Date().toISOString().split("T")[0];
     return today;
   };
 
-  
+   // shift data
+   const shiftDatas = [
+    '07.20 - 09.00', 
+    '09.20 - 11.00', 
+    '11.20 - 13.00', 
+    '13.20 - 15.00', 
+    '15.20 - 17.00', 
+    '17.20 - 19.00'
+  ]
 
-  // modal clicked ok
-  // const OkClicked = (click) => {
-  //   setOkClickModal(click);
-  //   setSaveClick(false);
-  // };
-
-  
-
-  // get floor all data 
-  const getAllFloorData = () => {
-    axios.get(`http://localhost:8081/data/get-all-floor`)
-    .then((data)=>{
-      console.log(data.data.data)
-      // setFloorArr(data.data.data)
-    })
-  }
-
-  // get room base floor 
-  const getSelectedFloor = (e) => {
-    axios.get(`http://localhost:8081/data/get-room-at-floor/${e.target.value}`)
-    .then((data)=>{
-      console.log(data.data.results)
-      setRoomArr(data.data.results)
-    })
-  }
-
-  // get shift data room
-  const getShiftRoom = (e) => {
-    axios.get(`http://localhost:8081/data/get-shift-room/${e.target.value}`)
+  // get data facility 
+  const getFacilities = () => {
+    axios.get(`http://localhost:8081/data/get-facilities`)
     .then((res)=>{
-      // console.log(res.data.data)
-      setShiftArr(res.data.data)
+      setFacilityid(res.data.data[0]?.FacilityID)
+      setFacilities(res.data.data)
+      setMeetingTimes(shiftDatas[0])
+    })
+    .catch((error)=>{
+      console.log(error)
     })
   }
 
@@ -57,38 +48,40 @@ function FormEvent() {
     axios.post(`http://localhost:8081/data/validation-form-event-room-data`, {
       "eventName": eventName,
       "eventDescription": eventDesc,
-      "floorId":  getSelectFloor,
-      "roomId": getRoomId,
-      "shiftId": getSelectShift,
-      "reservationDate": getDate
+      "facilityid": facilityid,
+      "meeting_times": meetingTimes,
+      "start_date": getDate
     })
     .then((res)=>{
       console.log(res.data.statuscode == 200)
+      console.log({
+        eventName, 
+        eventDesc, 
+        facilityid, 
+        meetingTimes, 
+        getDate
+      })
       // status code 200
-        setNextClick(true);
-        if(res.data.statuscode == 200){
-          updateNextClick(2)
+        if(res.data.status== 200){
+
+          setNextClick(2)
           eventNameTofront(eventName)
           eventDescToFront(eventDesc)
-          floorIdToFront(getSelectFloor)
-          roomIdToFront(getRoomId)
-          shiftIdToFront(getSelectShift)
+          roomIdToFront(facilityid)
+          shiftIdToFront(meetingTimes)
           reservationDateToFront(getDate)
           // ke summary
         
-          // console.log('data saved')
-          // dataSetMenuFunc(true)
         }
         // (nextClick) ? nextButtonClick(1) : 0
     })
     .catch((err)=>{
-      console.log(err.response.data.message)
-      setError(err.response.data.message)
+      console.log(err)
     })
   }
 
   useEffect(()=>{
-    getAllFloorData()
+    getFacilities()
   }, [])
 
   return (
@@ -106,8 +99,8 @@ function FormEvent() {
               id="event"
               className="w-full rounded-[10px] border border-2 px-3 py-1"
               placeholder="Event Name"
-        
-              
+              value={eventName}
+              onChange={(e)=>setEventName(e.target.value)}
             />
           </div>
         </div>
@@ -119,29 +112,9 @@ function FormEvent() {
             <textarea
               className="w-full rounded-[10px] border border-2 px-3 py-1"
               placeholder="Event Description"
-              
+              value={eventDesc}
+              onChange={(e)=>setEventDesc(e.target.value)}
             ></textarea>
-          </div>
-        </div>
-        <div className="px-5 py-2">
-          <div>
-            <label htmlFor="floor">Floor</label>
-          </div>
-          <div>
-            <select
-              name=""
-              id="floor"
-              
-              className="w-full rounded-[10px] border border-2 px-3 py-1"
-            >
-              {/* {floorArr.map((fl, idx) => {
-                return (
-                  <option>
-                  
-                  </option>
-                );
-              })} */}
-            </select>
           </div>
         </div>
         <div className="px-5 py-2">
@@ -154,15 +127,12 @@ function FormEvent() {
               id="room"
               placeholder="room"
               className="w-full rounded-[10px] border border-2 px-3 py-1"
-             
+              value={facilityid}
+              onChange={(e)=>setFacilityid(e.target.value)}
             >
-              {/* {getRoomArr.map((gr, idx) => {
-                return (
-                  <option key={idx} value={gr["RoomId"]}>
-                    
-                  </option>
-                );
-              })} */}
+              {facilities.map((fa)=>(
+                <option key={fa.FacilityID} value={fa.FacilityID}>{fa.FacilityID}</option>
+              ))}
             </select>
           </div>
         </div>
@@ -176,15 +146,12 @@ function FormEvent() {
               id="shift"
               placeholder="shift"
               className="w-full rounded-[10px] border border-2 px-3 py-1"
-              
+              value={meetingTimes}
+              onChange={(e)=>setMeetingTimes(e.target.value)}
             >
-              {/* {getShiftArr.map((gs, idx) => {
-                return (
-                  <option key={idx} value={gs["ShiftId"]}>
-                    {gs["ShiftName"]}
-                  </option>
-                );
-              })} */}
+              {shiftDatas.map((sh)=>(
+                <option key={sh} value={sh}>{sh}</option>
+              ))}
             </select>
           </div>
         </div>
@@ -210,6 +177,7 @@ function FormEvent() {
           <button 
           onClick={()=>{
             validateFormEvent()
+            
           }}className="bg-[#57B4FF] text-white font-bold w-28 rounded-[20px] px-1 py-2"
           >Next</button>
         </div>
