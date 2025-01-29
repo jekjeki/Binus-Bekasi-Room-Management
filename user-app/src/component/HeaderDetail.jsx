@@ -8,7 +8,7 @@ function HeaderDetail({ reservationTransactionId }) {
   return (
     <div className="h-[150px]  bg-gradient-to-r from-[#57CDFF] to-[#038ACA] relative">
       <div className="flex underline underline-offset-2 px-8 py-2 decoration-sky-500">
-        <Link to={(role=='LSC')?'/home-lsc':'/manager-dashboard'} className="flex">
+        <Link to={'/home-lsc'} className="flex">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import { getQrCode } from "../../../backend/src/utils/generatorQrCode";
+import Swal from 'sweetalert2'
 
 const Summary = ({borrower, events}) => {
 
@@ -60,81 +61,81 @@ const Summary = ({borrower, events}) => {
 
     // save button click 
     const saveBtnClick = () => {
+        Swal.fire({
+          title: "Data Saved !", 
+          text: "Successful save the data !", 
+          icon: "success",
+          confirmButtonColor: "#3085d6"
+        }).then((result)=>{
+          if(result.isConfirmed){
+            window.location.reload()
+          }
+        })
+
+        
+
         insertDataBorrowing()
     }
 
     return (
-        <div className={"w-4/5"}>
-          <div className={"w-full bg-white drop-shadow-2xl rounded-[20px]"}>
-            <div className="font-bold text-xl text-center py-6">
-              <p>Summary</p>
-            </div>
-            <div className="flex">
-            <div className="font-bold px-10 py-3">
-                    <p>Name:</p>
-                    <div className="font-normal ">
-                        <p>{borrower.name}</p>
-                        </div>
-                </div>
-                <div className="font-bold px-10 py-3">
-                    <p>NIM:</p>
-                    <div className="font-normal">
-                        <p>{borrower.nim}</p>
-                        </div>
-                </div>
-                <div className="font-bold px-10 py-3">
-                    <p>email:</p>
-                    <div className="font-normal">
-                        <p>{borrower.email}</p>
-                        </div>
-                </div>
-                <div className="font-bold px-10 py-3 ">
-                    <p>Event Name:</p>
-                    <div className="font-normal ">
-                        <p>{events.eventName}</p>
-                        </div>
-                </div>
-                <div className="font-bold px-10 py-3">
-                    <p>Event Description:</p>
-                    <div className="font-normal">
-                        <p>{events.eventDesc}</p>
-                        </div>
-                </div>
-                </div>
-
-                <div className="flex">
-                <div className="font-bold px-10 py-3">
-                    <p>Room:</p>
-                    <div className="font-normal">
-                        <p>{events.facilityid}</p>
-                        </div>
-                </div>
-                <div className="font-bold px-10 py-3">
-                    <p>Shift:</p>
-                    <div className="font-normal">
-                        <p>{events.meetingTimes}</p>
-                        </div>
-                </div>
-                <div className="font-bold px-10 py-3">
-                    <p>Reservation Date:</p>
-                    <div className="font-normal">
-                        <p>{events.startDate}</p>
-                        </div>
-                </div>
-              </div>
-
-            <div className="px-5 py-4 flex justify-center align-center">
-           <button 
-              onClick={()=>{
-                /**
-                 * still empty
-                 */
-                saveBtnClick()
-              }}className="bg-[#57B4FF] text-white font-bold w-28 rounded-[20px] px-1 py-2"
-              >Save</button>
-            </div>
-            </div>
+      <div className="w-4/5 mx-auto">
+      <div className="w-full bg-white drop-shadow-2xl rounded-[20px] p-8">
+        {/* Title */}
+        <div className="text-center mb-8">
+          <h1 className="font-bold text-3xl text-gray-800">Summary</h1>
         </div>
+  
+        {/* Borrower Details */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="space-y-2">
+            <p className="font-semibold text-gray-600">Name:</p>
+            <p className="text-gray-800">{borrower.name}</p>
+          </div>
+          <div className="space-y-2">
+            <p className="font-semibold text-gray-600">NIM:</p>
+            <p className="text-gray-800">{borrower.nim}</p>
+          </div>
+          <div className="space-y-2">
+            <p className="font-semibold text-gray-600">Email:</p>
+            <p className="text-gray-800">{borrower.email}</p>
+          </div>
+        </div>
+  
+        {/* Event Details */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="space-y-2">
+            <p className="font-semibold text-gray-600">Event Name:</p>
+            <p className="text-gray-800">{events.eventName}</p>
+          </div>
+          <div className="space-y-2">
+            <p className="font-semibold text-gray-600">Event Description:</p>
+            <p className="text-gray-800">{events.eventDesc}</p>
+          </div>
+          <div className="space-y-2">
+            <p className="font-semibold text-gray-600">Room:</p>
+            <p className="text-gray-800">{events.facilityid}</p>
+          </div>
+          <div className="space-y-2">
+            <p className="font-semibold text-gray-600">Shift:</p>
+            <p className="text-gray-800">{events.meetingTimes}</p>
+          </div>
+          <div className="space-y-2">
+            <p className="font-semibold text-gray-600">Reservation Date:</p>
+            <p className="text-gray-800">{events.startDate}</p>
+          </div>
+        </div>
+  
+        {/* Save Button */}
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={saveBtnClick}
+            className="bg-[#57B4FF] hover:bg-[#45A0E6] text-white font-bold rounded-[20px] px-6 py-3 transition duration-300"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
     
       );
 

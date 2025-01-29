@@ -14,32 +14,36 @@ import ListRooms from "./ListRooms";
 import UploadSheet from "./UploadSheet";
 import DownloadSheet from "./DownloadSheet";
 
-
-function Header({data, nextClickSideMenu}) {
-
-    const navigate = useNavigate();
-  
-  const [role, setRole] = useState('');
-  const [adminId, setAdminId] = useState('');
-  
+function Header({ data, nextClickSideMenu }) {
+  const navigate = useNavigate();
+  const [role, setRole] = useState("");
+  const [adminId, setAdminId] = useState("");
   const [nextClick, setNextClick] = useState(0);
-  const [borrower, setBorrower] = useState({ name: '', nim: '', email: '' });
+  const [borrower, setBorrower] = useState({ name: "", nim: "", email: "" });
   const [eventDetails, setEventDetails] = useState({
-    name: '', desc: '', floor: '', roomId: '', shift: '', date: ''
+    name: "",
+    desc: "",
+    floor: "",
+    roomId: "",
+    shift: "",
+    date: "",
   });
-  const [inventoryRequest, setInventoryRequest] = useState('');
+  const [inventoryRequest, setInventoryRequest] = useState("");
   const [nextClickLast, setNextClickLast] = useState(false);
 
-  if (nextClickLast) data = 'Home';
+  if (nextClickLast) data = "Home";
 
   const getCurrentLogin = async () => {
-    const response = await fetch(`http://localhost:${process.env.PORT}/admin/get-one-admin`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json;charset=UTF-8",
-        Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
-      },
-    });
+    const response = await fetch(
+      `http://localhost:${process.env.PORT}/admin/get-one-admin`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+          Authorization: `Bearer ${sessionStorage.getItem("jwt")}`,
+        },
+      }
+    );
     const data = await response.json();
     setRole(data.data.AdminRole);
   };
@@ -51,41 +55,35 @@ function Header({data, nextClickSideMenu}) {
 
   const handleLogout = () => {
     sessionStorage.clear();
-    navigate('/');
+    navigate("/");
   };
 
-  const updateBorrower = (key, value) => setBorrower((prev) => ({ ...prev, [key]: value }));
-  const updateEventDetails = (key, value) => setEventDetails((prev) => ({ ...prev, [key]: value }));
-  
+  const updateBorrower = (key, value) =>
+    setBorrower((prev) => ({ ...prev, [key]: value }));
+  const updateEventDetails = (key, value) =>
+    setEventDetails((prev) => ({ ...prev, [key]: value }));
+
+  // Function to reset nextClick to 0
+  const resetNextClick = () => {
+    setNextClick(0);
+  };
 
   return (
     <div className={"w-full"}>
       <HeaderBanner role={role} onLogout={handleLogout} />
-
-        {data == "Home" && (
-            <HomePage role={role} />
-        )}
-
+      <div className="flex-1">
+        {data == "Home" && <HomePage role={role} />}
         {data == "CreateReservation" && (
-            <CreateReservation
-                role={role}
-                setNextClick={setNextClick}
-                nextClick={nextClick}
-            />
+          <CreateReservation
+            role={role}
+            setNextClick={setNextClick}
+            nextClick={nextClick}
+          />
         )}
-
-        {data === "RoomAvailable" && (
-            <ListRooms role={role} />
-        )}
-
-        {data === 'UploadSchedule' && (
-          <UploadSheet role={role} />
-        )}
-
-        {data === 'DownloadSchedule' && (
-          <DownloadSheet role={role} />
-        )}
-
+        {data === "RoomAvailable" && <ListRooms role={role} />}
+        {data === "UploadSchedule" && <UploadSheet role={role} />}
+        {data === "DownloadSchedule" && <DownloadSheet role={role} />}
+      </div>
     </div>
   );
 }

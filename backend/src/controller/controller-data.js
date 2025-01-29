@@ -669,6 +669,129 @@ const insertDataBorrowing = (req, res) => {
   // collect data for borrowing transaction 
   const eventDesc = req.body.eventDesc 
 
+    // template html 
+    const emailHtml = (borrowerEmail, meetingid, facilityId, meetingTimes, startDate) => `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        /* General styles for the email */
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+          color: #333;
+        }
+        .email-container {
+          max-width: 600px;
+          margin: 20px auto;
+          background-color: #ffffff;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+          text-align: center;
+          background-color: #4CAF50;
+          padding: 10px;
+          border-radius: 8px 8px 0 0;
+        }
+        .header h1 {
+          margin: 0;
+          color: #ffffff;
+        }
+        .content {
+          padding: 20px;
+          line-height: 1.6;
+        }
+        .content p {
+          margin: 0 0 10px;
+        }
+        .content .highlight {
+          color: #4CAF50;
+          font-weight: bold;
+        }
+        .footer {
+          text-align: center;
+          font-size: 12px;
+          color: #777;
+          margin-top: 20px;
+        }
+        @media only screen and (max-width: 600px) {
+          .email-container {
+            width: 100%;
+            padding: 15px;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="email-container">
+        <div class="header">
+          <h1>Room Booking Reservation</h1>
+        </div>
+        <div class="content">
+          <p>Dear <span class="highlight">${borrowerEmail}</span>,</p>
+          <p>Your room booking has been successfully reserved. Here are the reservation details of your booking:</p>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+            <tr>
+              <td style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">Meeting ID</td>
+              <td style="padding: 8px; border: 1px solid #ddd;">${meetingid}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">Facility ID</td>
+              <td style="padding: 8px; border: 1px solid #ddd;">${facilityId}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">Meeting Times</td>
+              <td style="padding: 8px; border: 1px solid #ddd;">${meetingTimes}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">Start Date</td>
+              <td style="padding: 8px; border: 1px solid #ddd;">${startDate}</td>
+            </tr>
+          </table>
+          <p>Thank you for using our service!</p>
+        </div>
+        <div class="footer">
+          <p>&copy; 2025 Room Booking System. All rights reserved.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: "yusufzaki013@gmail.com",
+      pass: "zlwt fefg vocu vvfm",
+    },
+  });
+  transporter.verify().then(console.log).catch(console.error);
+
+  transporter.sendMail({
+    from: '"zaky" <yusufzaki013@gmail.com>',
+    to: `${borrowerEmail}`,
+    attachDataUrls: true,
+    subject: "Your Room Booking has been created !",
+  html: emailHtml(
+    borrowerEmail, 
+    meetingid, 
+    facilityid, 
+    meetingtimes,
+    startDate
+  )
+  }, (error, info) => {
+    if(error) console.log(error)
+
+    console.log(info)
+  })
+
   // insert data to meetings
   const queryInsertMeetings = `
     INSERT INTO Meetings (MeetingID, FacilityID, MeetingDay, MeetingTimes, StartDate, ClassSection, CourseDescription, LectureCode, MeetCategory) VALUES 
